@@ -2,7 +2,7 @@ import { useEffect, useState, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { Layout } from "./Layout";
-import { IconPlus, IconPlay, IconPlayNext, IconHeart } from "./Icons";
+import { IconPlus, IconPlay, IconPlayNext } from "./Icons";
 import type {
   QueueTrack,
   FavoriteTrack,
@@ -18,7 +18,6 @@ type FavoritesProps = {
   onAddToQueueNext: (track: QueueTrack) => Promise<void>;
   onPlayTrack: (track: QueueTrack) => Promise<void>;
   onPlayAlbum: (albumId: string) => Promise<void>;
-  onRemoveFavorite: (type: FavoriteType, itemId: string) => Promise<void>;
 };
 
 export function Favorites({
@@ -27,8 +26,7 @@ export function Favorites({
   onAddToQueue,
   onAddToQueueNext,
   onPlayTrack,
-  onPlayAlbum,
-  onRemoveFavorite
+  onPlayAlbum
 }: FavoritesProps) {
   const navigate = useNavigate();
   const { t } = useTranslation();
@@ -132,20 +130,6 @@ export function Favorites({
     navigate(`/artist/${artist.id}`);
   };
 
-  const handleRemoveFavorite = async (e: React.MouseEvent, type: FavoriteType, itemId: string | number) => {
-    e.stopPropagation();
-    await onRemoveFavorite(type, String(itemId));
-    loadFavorites(type);
-  };
-
-  const getResultCount = (tab: FavoriteType): number => {
-    switch (tab) {
-      case "tracks": return tracks.length;
-      case "albums": return albums.length;
-      case "artists": return artists.length;
-    }
-  };
-
   return (
     <Layout isConnected={connected}>
       <div className="stack">
@@ -161,19 +145,19 @@ export function Favorites({
                 className={`search-tab ${activeTab === "albums" ? "active" : ""}`}
                 onClick={() => handleTabChange("albums")}
               >
-                {t("favorites.albums")} ({getResultCount("albums")})
+                {t("favorites.albums")}
               </button>
               <button
                 className={`search-tab ${activeTab === "tracks" ? "active" : ""}`}
                 onClick={() => handleTabChange("tracks")}
               >
-                {t("favorites.tracks")} ({getResultCount("tracks")})
+                {t("favorites.tracks")}
               </button>
               <button
                 className={`search-tab ${activeTab === "artists" ? "active" : ""}`}
                 onClick={() => handleTabChange("artists")}
               >
-                {t("favorites.artists")} ({getResultCount("artists")})
+                {t("favorites.artists")}
               </button>
             </div>
 
@@ -214,13 +198,6 @@ export function Favorites({
                           {track.performer.name}
                         </button>
                       </div>
-                      <button
-                        className="fav-btn active"
-                        onClick={(e) => handleRemoveFavorite(e, "tracks", track.id)}
-                        aria-label={t("favorites.remove")}
-                      >
-                        <IconHeart size={18} filled />
-                      </button>
                       <div className="track-actions">
                         <button
                           className="add-btn"
@@ -294,13 +271,6 @@ export function Favorites({
                         )}
                       </div>
                       <button
-                        className="fav-btn active"
-                        onClick={(e) => handleRemoveFavorite(e, "albums", album.id)}
-                        aria-label={t("favorites.remove")}
-                      >
-                        <IconHeart size={18} filled />
-                      </button>
-                      <button
                         className="add-btn"
                         onClick={(e) => handlePlayAlbumClick(e, album)}
                         disabled={addingId === album.id}
@@ -342,13 +312,6 @@ export function Favorites({
                           </div>
                         )}
                       </div>
-                      <button
-                        className="fav-btn active"
-                        onClick={(e) => handleRemoveFavorite(e, "artists", artist.id)}
-                        aria-label={t("favorites.remove")}
-                      >
-                        <IconHeart size={18} filled />
-                      </button>
                     </div>
                   ))
                 )}

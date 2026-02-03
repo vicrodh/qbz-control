@@ -417,21 +417,6 @@ export default function App() {
     [connected, config]
   );
 
-  const handleRemoveFavorite = useCallback(
-    async (type: FavoriteType, itemId: string) => {
-      if (!connected) return;
-      try {
-        await apiFetch(config, "/api/favorites/remove", {
-          method: "POST",
-          body: JSON.stringify({ favType: type, itemId })
-        });
-      } catch (err) {
-        setStatusText(`Failed to remove favorite: ${(err as Error).message}`);
-      }
-    },
-    [connected, config]
-  );
-
   const handlePlayQueueIndex = useCallback(
     async (index: number) => {
       if (!connected) return;
@@ -724,7 +709,6 @@ export default function App() {
             onAddToQueueNext={handleAddToQueueNext}
             onPlayTrack={handlePlayTrack}
             onPlayAlbum={handlePlayAlbum}
-            onRemoveFavorite={handleRemoveFavorite}
           />
         }
       />
