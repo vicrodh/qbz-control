@@ -27,6 +27,7 @@ export function Pairing({
   statusText,
   onSave,
   onTest,
+  onQrConfig,
   isConnected
 }: PairingProps) {
   const navigate = useNavigate();
