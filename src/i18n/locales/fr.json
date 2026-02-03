@@ -79,11 +79,15 @@
   },
   "search": {
     "title": "Recherche",
-    "placeholder": "Rechercher des pistes...",
+    "placeholder": "Rechercher pistes, albums, artistes...",
     "searching": "Recherche...",
     "noResults": "Aucun résultat",
     "noResultsDesc": "Essayez un autre terme de recherche",
-    "hint": "Rechercher dans le catalogue Qobuz"
+    "hint": "Rechercher dans le catalogue Qobuz",
+    "tracks": "Pistes",
+    "albums": "Albums",
+    "artists": "Artistes",
+    "albumCount": "{{count}} albums"
   },
   "settings": {
     "title": "Paramètres",
