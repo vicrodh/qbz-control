@@ -721,6 +721,8 @@ export default function App() {
             connected={connected}
             onGetFavorites={handleGetFavorites}
             onAddToQueue={handleAddToQueue}
+            onAddToQueueNext={handleAddToQueueNext}
+            onPlayTrack={handlePlayTrack}
             onPlayAlbum={handlePlayAlbum}
             onRemoveFavorite={handleRemoveFavorite}
           />

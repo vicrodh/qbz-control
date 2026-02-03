@@ -2,7 +2,7 @@ import { useEffect, useState, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { Layout } from "./Layout";
-import { IconPlus, IconPlay, IconHeart } from "./Icons";
+import { IconPlus, IconPlay, IconPlayNext, IconHeart } from "./Icons";
 import type {
   QueueTrack,
   FavoriteTrack,
@@ -15,6 +15,8 @@ type FavoritesProps = {
   connected: boolean;
   onGetFavorites: (type: FavoriteType) => Promise<any>;
   onAddToQueue: (track: QueueTrack) => Promise<void>;
+  onAddToQueueNext: (track: QueueTrack) => Promise<void>;
+  onPlayTrack: (track: QueueTrack) => Promise<void>;
   onPlayAlbum: (albumId: string) => Promise<void>;
   onRemoveFavorite: (type: FavoriteType, itemId: string) => Promise<void>;
 };
@@ -23,6 +25,8 @@ export function Favorites({
   connected,
   onGetFavorites,
   onAddToQueue,
+  onAddToQueueNext,
+  onPlayTrack,
   onPlayAlbum,
   onRemoveFavorite
 }: FavoritesProps) {
@@ -66,20 +70,42 @@ export function Favorites({
     setActiveTab(tab);
   };
 
+  const createQueueTrack = (track: FavoriteTrack): QueueTrack => {
+    const artworkUrl = getTrackImage(track);
+    return {
+      id: track.id,
+      title: track.title,
+      artist: track.performer.name,
+      album: track.album.title,
+      duration_secs: track.duration,
+      artwork_url: artworkUrl,
+      streamable: track.streamable
+    };
+  };
+
   const handleAddToQueue = async (track: FavoriteTrack) => {
     setAddingId(track.id);
     try {
-      const artworkUrl = getTrackImage(track);
-      const queueTrack: QueueTrack = {
-        id: track.id,
-        title: track.title,
-        artist: track.performer.name,
-        album: track.album.title,
-        duration_secs: track.duration,
-        artwork_url: artworkUrl,
-        streamable: track.streamable
-      };
-      await onAddToQueue(queueTrack);
+      await onAddToQueue(createQueueTrack(track));
+    } finally {
+      setAddingId(null);
+    }
+  };
+
+  const handleAddToQueueNext = async (track: FavoriteTrack) => {
+    setAddingId(track.id);
+    try {
+      await onAddToQueueNext(createQueueTrack(track));
+    } finally {
+      setAddingId(null);
+    }
+  };
+
+  const handlePlayTrack = async (track: FavoriteTrack) => {
+    setAddingId(track.id);
+    try {
+      await onPlayTrack(createQueueTrack(track));
+      navigate("/controls");
     } finally {
       setAddingId(null);
     }
@@ -185,14 +211,35 @@ export function Favorites({
                       >
                         <IconHeart size={18} filled />
                       </button>
-                      <button
-                        className="add-btn"
-                        onClick={() => handleAddToQueue(track)}
-                        disabled={addingId === track.id || !track.streamable}
-                        aria-label={t("queue.addToQueue")}
-                      >
-                        <IconPlus size={18} />
-                      </button>
+                      <div className="track-actions">
+                        <button
+                          className="add-btn"
+                          onClick={() => handlePlayTrack(track)}
+                          disabled={addingId === track.id || !track.streamable}
+                          aria-label={t("queue.play")}
+                          title={t("queue.play")}
+                        >
+                          <IconPlay size={16} />
+                        </button>
+                        <button
+                          className="add-btn"
+                          onClick={() => handleAddToQueueNext(track)}
+                          disabled={addingId === track.id || !track.streamable}
+                          aria-label={t("queue.playNext")}
+                          title={t("queue.playNext")}
+                        >
+                          <IconPlayNext size={16} />
+                        </button>
+                        <button
+                          className="add-btn"
+                          onClick={() => handleAddToQueue(track)}
+                          disabled={addingId === track.id || !track.streamable}
+                          aria-label={t("queue.addToQueue")}
+                          title={t("queue.addToQueue")}
+                        >
+                          <IconPlus size={16} />
+                        </button>
+                      </div>
                     </div>
                   ))
                 )}
