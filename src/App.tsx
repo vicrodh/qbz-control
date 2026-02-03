@@ -39,6 +39,8 @@ export default function App() {
   const [isStandalone, setIsStandalone] = useState(false);
 
   const refreshTimer = useRef<number | null>(null);
+  const userActionInProgress = useRef(false);
+  const wsDebounceTimer = useRef<number | null>(null);
 
   const statusLine = useMemo(() => {
     if (!connected) {
@@ -102,8 +104,12 @@ export default function App() {
     [config]
   );
 
-  const refreshNowPlaying = useCallback(async () => {
+  const refreshNowPlaying = useCallback(async (force = false) => {
     if (!connected || !config.baseUrl || !config.token) {
+      return;
+    }
+    // Skip background refreshes while user action is in progress
+    if (!force && userActionInProgress.current) {
       return;
     }
     try {
@@ -118,8 +124,12 @@ export default function App() {
     }
   }, [connected, config]);
 
-  const refreshQueue = useCallback(async () => {
+  const refreshQueue = useCallback(async (force = false) => {
     if (!connected || !config.baseUrl || !config.token) {
+      return;
+    }
+    // Skip background refreshes while user action is in progress
+    if (!force && userActionInProgress.current) {
       return;
     }
     try {
@@ -177,13 +187,22 @@ export default function App() {
     }
     const ws = new WebSocket(buildWsUrl(config));
     ws.onmessage = () => {
-      refreshNowPlaying();
-      refreshQueue();
+      // Debounce WebSocket-triggered refreshes to avoid request spam
+      if (wsDebounceTimer.current) {
+        window.clearTimeout(wsDebounceTimer.current);
+      }
+      wsDebounceTimer.current = window.setTimeout(() => {
+        refreshNowPlaying();
+        refreshQueue();
+      }, 200);
     };
     ws.onclose = () => {
       // Keep polling running as fallback.
     };
     return () => {
+      if (wsDebounceTimer.current) {
+        window.clearTimeout(wsDebounceTimer.current);
+      }
       ws.close();
     };
   }, [connected, config.baseUrl, config.token, refreshNowPlaying, refreshQueue]);
@@ -278,15 +297,18 @@ export default function App() {
   const handlePlayQueueIndex = useCallback(
     async (index: number) => {
       if (!connected) return;
+      userActionInProgress.current = true;
       try {
         await apiFetch(config, "/api/queue/play", {
           method: "POST",
           body: JSON.stringify({ index })
         });
-        await refreshNowPlaying();
-        await refreshQueue();
+        await refreshNowPlaying(true);
+        await refreshQueue(true);
       } catch (err) {
         setStatusText(`Playback error: ${(err as Error).message}`);
+      } finally {
+        userActionInProgress.current = false;
       }
     },
     [connected, config, refreshNowPlaying, refreshQueue]
@@ -295,14 +317,17 @@ export default function App() {
   const handleAddToQueue = useCallback(
     async (track: QueueTrack) => {
       if (!connected) return;
+      userActionInProgress.current = true;
       try {
         await apiFetch(config, "/api/queue/add", {
           method: "POST",
           body: JSON.stringify({ track })
         });
-        await refreshQueue();
+        await refreshQueue(true);
       } catch (err) {
         setStatusText(`Failed to add to queue: ${(err as Error).message}`);
+      } finally {
+        userActionInProgress.current = false;
       }
     },
     [connected, config, refreshQueue]
