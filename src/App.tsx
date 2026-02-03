@@ -9,7 +9,7 @@ import { Favorites } from "./components/Favorites";
 import { Settings } from "./components/Settings";
 import { Album } from "./components/Album";
 import { Artist } from "./components/Artist";
-import { apiFetch, apiJson, buildWsUrl } from "./lib/api";
+import { apiFetch, apiJson } from "./lib/api";
 import { clearConfig, loadConfig, saveConfig } from "./lib/storage";
 import type {
   ApiConfig,
@@ -43,9 +43,10 @@ export default function App() {
   const [installEvent, setInstallEvent] = useState<BeforeInstallPromptEvent | null>(null);
   const [isStandalone, setIsStandalone] = useState(false);
 
-  const refreshTimer = useRef<number | null>(null);
   const userActionInProgress = useRef(false);
-  const wsDebounceTimer = useRef<number | null>(null);
+  const sseDebounceTimer = useRef<number | null>(null);
+  const eventSourceRef = useRef<EventSource | null>(null);
+  const prevTrackId = useRef<number | null>(null);
 
   const statusLine = useMemo(() => {
     if (!connected) {
@@ -148,15 +149,6 @@ export default function App() {
     }
   }, [connected, config]);
 
-  const startPolling = useCallback(() => {
-    if (refreshTimer.current) {
-      window.clearInterval(refreshTimer.current);
-    }
-    refreshTimer.current = window.setInterval(() => {
-      refreshNowPlaying();
-    }, 1500);
-  }, [refreshNowPlaying]);
-
   useEffect(() => {
     if (!config.baseUrl || !config.token) {
       return;
@@ -169,33 +161,22 @@ export default function App() {
     });
   }, [config.baseUrl, config.token, testConnection, refreshNowPlaying, refreshQueue]);
 
-  useEffect(() => {
-    if (!connected) {
-      if (refreshTimer.current) {
-        window.clearInterval(refreshTimer.current);
-        refreshTimer.current = null;
-      }
-      return;
-    }
-    startPolling();
-    return () => {
-      if (refreshTimer.current) {
-        window.clearInterval(refreshTimer.current);
-        refreshTimer.current = null;
-      }
-    };
-  }, [connected, startPolling]);
-
+  // SSE connection for real-time updates (replaces polling + WebSocket)
   useEffect(() => {
     if (!connected || !config.baseUrl || !config.token) {
+      if (eventSourceRef.current) {
+        eventSourceRef.current.close();
+        eventSourceRef.current = null;
+      }
       return;
     }
-    const ws = new WebSocket(buildWsUrl(config));
-    let lastTrackId: number | null = null;
 
-    ws.onmessage = (event) => {
+    const url = `${config.baseUrl}/api/events?token=${encodeURIComponent(config.token)}`;
+    const es = new EventSource(url);
+    eventSourceRef.current = es;
+
+    es.onmessage = (event) => {
       try {
-        // Parse WebSocket message - it's a PlaybackEvent from the backend
         const data = JSON.parse(event.data) as {
           is_playing: boolean;
           position: number;
@@ -206,7 +187,7 @@ export default function App() {
           repeat?: string;
         };
 
-        // Update playback state directly from WebSocket data
+        // Update playback state from SSE data
         setPlayback({
           is_playing: data.is_playing,
           position: data.position,
@@ -215,7 +196,7 @@ export default function App() {
           volume: data.volume
         });
 
-        // Update shuffle/repeat if present in message
+        // Update shuffle/repeat if present
         if (data.shuffle !== undefined) {
           setShuffle(data.shuffle);
         }
@@ -225,42 +206,33 @@ export default function App() {
         }
 
         // If track changed, refresh to get full track info and queue
-        if (lastTrackId !== null && lastTrackId !== data.track_id) {
-          // Debounce the full refresh for track changes
-          if (wsDebounceTimer.current) {
-            window.clearTimeout(wsDebounceTimer.current);
+        if (prevTrackId.current !== null && prevTrackId.current !== data.track_id) {
+          if (sseDebounceTimer.current) {
+            window.clearTimeout(sseDebounceTimer.current);
           }
-          wsDebounceTimer.current = window.setTimeout(() => {
+          sseDebounceTimer.current = window.setTimeout(() => {
             refreshNowPlaying(true);
             refreshQueue(true);
           }, 100);
         }
-        lastTrackId = data.track_id;
+        prevTrackId.current = data.track_id;
       } catch {
-        // Fallback: if parsing fails, do a full refresh
-        if (wsDebounceTimer.current) {
-          window.clearTimeout(wsDebounceTimer.current);
-        }
-        wsDebounceTimer.current = window.setTimeout(() => {
-          refreshNowPlaying();
-          refreshQueue();
-        }, 200);
+        // Parse error, ignore
+        console.error('SSE parse error');
       }
     };
 
-    ws.onclose = () => {
-      // Keep polling running as fallback.
-    };
-
-    ws.onerror = () => {
-      // WebSocket error, polling will handle updates
+    es.onerror = () => {
+      // EventSource reconnects automatically
+      console.log('SSE connection error, will auto-reconnect');
     };
 
     return () => {
-      if (wsDebounceTimer.current) {
-        window.clearTimeout(wsDebounceTimer.current);
+      if (sseDebounceTimer.current) {
+        window.clearTimeout(sseDebounceTimer.current);
       }
-      ws.close();
+      es.close();
+      eventSourceRef.current = null;
     };
   }, [connected, config.baseUrl, config.token, refreshNowPlaying, refreshQueue]);
 

@@ -37,11 +37,3 @@ export async function apiJson<T>(
   const res = await apiFetch(config, path, options);
   return res.json() as Promise<T>;
 }
-
-export function buildWsUrl(config: ApiConfig): string {
-  const url = new URL(config.baseUrl);
-  url.protocol = url.protocol === "https:" ? "wss:" : "ws:";
-  url.pathname = "/api/ws";
-  url.search = `token=${encodeURIComponent(config.token)}`;
-  return url.toString();
-}
