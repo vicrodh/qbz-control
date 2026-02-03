@@ -83,6 +83,8 @@
     "repeatAll": "All",
     "repeatOne": "One",
     "addToQueue": "Add to Queue",
+    "playNext": "Play Next",
+    "play": "Play",
     "added": "Added to queue"
   },
   "search": {

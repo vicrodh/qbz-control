@@ -101,6 +101,20 @@ export function IconPlay({ size = 24, ...props }: IconProps) {
   );
 }
 
+export function IconPlayNext({ size = 24, ...props }: IconProps) {
+  return (
+    <svg
+      width={size}
+      height={size}
+      viewBox="0 0 24 24"
+      fill="currentColor"
+      {...props}
+    >
+      <path d="M6 4v16l10-8-10-8Zm12 0v16h-2V4h2Z" />
+    </svg>
+  );
+}
+
 export function IconPause({ size = 24, ...props }: IconProps) {
   return (
     <svg

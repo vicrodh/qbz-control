@@ -83,6 +83,8 @@
     "repeatAll": "Todas",
     "repeatOne": "Una",
     "addToQueue": "Agregar a Cola",
+    "playNext": "Reproducir Siguiente",
+    "play": "Reproducir",
     "added": "Agregado a la cola"
   },
   "search": {

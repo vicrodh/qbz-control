@@ -1327,6 +1327,19 @@ button:disabled {
   opacity: 0.5;
 }
 
+/* Track Actions Container */
+.track-actions {
+  display: flex;
+  gap: 4px;
+  flex-shrink: 0;
+}
+
+.track-actions .add-btn {
+  width: 32px;
+  height: 32px;
+  min-width: 32px;
+}
+
 /* Favorite Button */
 .fav-btn {
   width: 36px;

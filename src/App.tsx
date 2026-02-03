@@ -471,6 +471,55 @@ export default function App() {
     [connected, config, refreshQueue]
   );
 
+  const handleAddToQueueNext = useCallback(
+    async (track: QueueTrack) => {
+      if (!connected) return;
+      userActionInProgress.current = true;
+      try {
+        await apiFetch(config, "/api/queue/add-next", {
+          method: "POST",
+          body: JSON.stringify({ track })
+        });
+        await refreshQueue(true);
+      } catch (err) {
+        setStatusText(`Failed to add to queue: ${(err as Error).message}`);
+      } finally {
+        userActionInProgress.current = false;
+      }
+    },
+    [connected, config, refreshQueue]
+  );
+
+  const handlePlayTrack = useCallback(
+    async (track: QueueTrack) => {
+      if (!connected) return;
+      userActionInProgress.current = true;
+      try {
+        // Add track to queue and play it immediately
+        await apiFetch(config, "/api/queue/add", {
+          method: "POST",
+          body: JSON.stringify({ track })
+        });
+        await refreshQueue(true);
+        // Get the queue length and play the last track
+        const queueData = await apiJson<{ upcoming: unknown[] }>(config, "/api/queue");
+        if (queueData?.upcoming) {
+          const lastIndex = queueData.upcoming.length - 1;
+          await apiFetch(config, "/api/queue/play", {
+            method: "POST",
+            body: JSON.stringify({ index: lastIndex })
+          });
+          await refreshNowPlaying(true);
+        }
+      } catch (err) {
+        setStatusText(`Failed to play track: ${(err as Error).message}`);
+      } finally {
+        userActionInProgress.current = false;
+      }
+    },
+    [connected, config, refreshQueue, refreshNowPlaying]
+  );
+
   const handleShuffle = useCallback(async () => {
     if (!connected) return;
     try {
@@ -646,6 +695,8 @@ export default function App() {
             connected={connected}
             onSearchAll={handleSearchAll}
             onAddToQueue={handleAddToQueue}
+            onAddToQueueNext={handleAddToQueueNext}
+            onPlayTrack={handlePlayTrack}
             onPlayAlbum={handlePlayAlbum}
           />
         }
