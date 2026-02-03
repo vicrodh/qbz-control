@@ -736,6 +736,8 @@ export default function App() {
             onGetAlbum={handleGetAlbum}
             onPlayAlbum={handlePlayAlbum}
             onAddToQueue={handleAddToQueue}
+            onAddToQueueNext={handleAddToQueueNext}
+            onPlayTrack={handlePlayTrack}
           />
         }
       />

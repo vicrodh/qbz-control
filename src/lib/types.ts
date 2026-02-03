@@ -81,6 +81,7 @@ export type SearchArtist = {
   id: number;
   name: string;
   picture?: string | null;
+  image?: ImageSet | null;
   albums_count?: number;
 };
 
