@@ -191,19 +191,60 @@ export default function App() {
       return;
     }
     const ws = new WebSocket(buildWsUrl(config));
-    ws.onmessage = () => {
-      // Debounce WebSocket-triggered refreshes to avoid request spam
-      if (wsDebounceTimer.current) {
-        window.clearTimeout(wsDebounceTimer.current);
+    let lastTrackId: number | null = null;
+
+    ws.onmessage = (event) => {
+      try {
+        // Parse WebSocket message - it's a PlaybackEvent from the backend
+        const data = JSON.parse(event.data) as {
+          is_playing: boolean;
+          position: number;
+          duration: number;
+          track_id: number;
+          volume: number;
+        };
+
+        // Update playback state directly from WebSocket data
+        setPlayback({
+          is_playing: data.is_playing,
+          position: data.position,
+          duration: data.duration,
+          track_id: data.track_id,
+          volume: data.volume
+        });
+
+        // If track changed, refresh to get full track info and queue
+        if (lastTrackId !== null && lastTrackId !== data.track_id) {
+          // Debounce the full refresh for track changes
+          if (wsDebounceTimer.current) {
+            window.clearTimeout(wsDebounceTimer.current);
+          }
+          wsDebounceTimer.current = window.setTimeout(() => {
+            refreshNowPlaying(true);
+            refreshQueue(true);
+          }, 100);
+        }
+        lastTrackId = data.track_id;
+      } catch {
+        // Fallback: if parsing fails, do a full refresh
+        if (wsDebounceTimer.current) {
+          window.clearTimeout(wsDebounceTimer.current);
+        }
+        wsDebounceTimer.current = window.setTimeout(() => {
+          refreshNowPlaying();
+          refreshQueue();
+        }, 200);
       }
-      wsDebounceTimer.current = window.setTimeout(() => {
-        refreshNowPlaying();
-        refreshQueue();
-      }, 200);
     };
+
     ws.onclose = () => {
       // Keep polling running as fallback.
     };
+
+    ws.onerror = () => {
+      // WebSocket error, polling will handle updates
+    };
+
     return () => {
       if (wsDebounceTimer.current) {
         window.clearTimeout(wsDebounceTimer.current);
@@ -236,21 +277,25 @@ export default function App() {
     if (!connected) return;
     try {
       await apiFetch(config, "/api/playback/next", { method: "POST" });
-      await refreshNowPlaying();
+      // Small delay to let backend process, then force refresh
+      await new Promise(resolve => setTimeout(resolve, 50));
+      await Promise.all([refreshNowPlaying(true), refreshQueue(true)]);
     } catch (err) {
       setStatusText(`Playback error: ${(err as Error).message}`);
     }
-  }, [connected, config, refreshNowPlaying]);
+  }, [connected, config, refreshNowPlaying, refreshQueue]);
 
   const handlePrevious = useCallback(async () => {
     if (!connected) return;
     try {
       await apiFetch(config, "/api/playback/previous", { method: "POST" });
-      await refreshNowPlaying();
+      // Small delay to let backend process, then force refresh
+      await new Promise(resolve => setTimeout(resolve, 50));
+      await Promise.all([refreshNowPlaying(true), refreshQueue(true)]);
     } catch (err) {
       setStatusText(`Playback error: ${(err as Error).message}`);
     }
-  }, [connected, config, refreshNowPlaying]);
+  }, [connected, config, refreshNowPlaying, refreshQueue]);
 
   const handleSeek = useCallback(
     async (position: number) => {
