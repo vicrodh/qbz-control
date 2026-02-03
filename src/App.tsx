@@ -6,6 +6,8 @@ import { Controls } from "./components/Controls";
 import { Queue } from "./components/Queue";
 import { Search } from "./components/Search";
 import { Settings } from "./components/Settings";
+import { Album } from "./components/Album";
+import { Artist } from "./components/Artist";
 import { apiFetch, apiJson, buildWsUrl } from "./lib/api";
 import { clearConfig, loadConfig, saveConfig } from "./lib/storage";
 import type {
@@ -293,6 +295,54 @@ export default function App() {
     [connected, config]
   );
 
+  const handlePlayAlbum = useCallback(
+    async (albumId: string) => {
+      if (!connected) return;
+      userActionInProgress.current = true;
+      try {
+        await apiFetch(config, "/api/album/play", {
+          method: "POST",
+          body: JSON.stringify({ albumId })
+        });
+        await refreshNowPlaying(true);
+        await refreshQueue(true);
+      } catch (err) {
+        setStatusText(`Failed to play album: ${(err as Error).message}`);
+      } finally {
+        userActionInProgress.current = false;
+      }
+    },
+    [connected, config, refreshNowPlaying, refreshQueue]
+  );
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const handleGetAlbum = useCallback(
+    async (albumId: string): Promise<any | null> => {
+      if (!connected) return null;
+      try {
+        return await apiJson(config, `/api/album/${encodeURIComponent(albumId)}`);
+      } catch (err) {
+        setStatusText(`Failed to load album: ${(err as Error).message}`);
+        return null;
+      }
+    },
+    [connected, config]
+  );
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const handleGetArtist = useCallback(
+    async (artistId: string): Promise<any | null> => {
+      if (!connected) return null;
+      try {
+        return await apiJson(config, `/api/artist/${encodeURIComponent(artistId)}`);
+      } catch (err) {
+        setStatusText(`Failed to load artist: ${(err as Error).message}`);
+        return null;
+      }
+    },
+    [connected, config]
+  );
+
   const handlePlayQueueIndex = useCallback(
     async (index: number) => {
       if (!connected) return;
@@ -473,6 +523,7 @@ export default function App() {
             connected={connected}
             onSearchAll={handleSearchAll}
             onAddToQueue={handleAddToQueue}
+            onPlayAlbum={handlePlayAlbum}
           />
         }
       />
@@ -486,6 +537,27 @@ export default function App() {
             statusText={statusLine}
             onCopyToken={handleCopyToken}
             onClear={handleClearConfig}
+          />
+        }
+      />
+      <Route
+        path="/album/:albumId"
+        element={
+          <Album
+            connected={connected}
+            onGetAlbum={handleGetAlbum}
+            onPlayAlbum={handlePlayAlbum}
+            onAddToQueue={handleAddToQueue}
+          />
+        }
+      />
+      <Route
+        path="/artist/:artistId"
+        element={
+          <Artist
+            connected={connected}
+            onGetArtist={handleGetArtist}
+            onPlayAlbum={handlePlayAlbum}
           />
         }
       />

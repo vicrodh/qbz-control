@@ -89,6 +89,17 @@
     "artists": "Artists",
     "albumCount": "{{count}} albums"
   },
+  "album": {
+    "loading": "Loading album...",
+    "notFound": "Album not found",
+    "play": "Play Album"
+  },
+  "artist": {
+    "loading": "Loading artist...",
+    "notFound": "Artist not found",
+    "albums": "Albums",
+    "albumCount": "{{count}} albums"
+  },
   "settings": {
     "title": "Settings",
     "connection": "Connection",
