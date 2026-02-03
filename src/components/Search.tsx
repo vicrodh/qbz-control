@@ -254,9 +254,19 @@ export function Search({ connected, onSearchAll, onAddToQueue, onAddToQueueNext,
                     {album.title}
                     {album.hires && <span className="hires-badge">Hi-Res</span>}
                   </div>
-                  <div className="list-subtitle">
-                    {album.artist?.name || "Unknown artist"}
-                  </div>
+                  {album.artist ? (
+                    <button
+                      className="track-artist-link"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        navigate(`/artist/${album.artist.id}`);
+                      }}
+                    >
+                      {album.artist.name}
+                    </button>
+                  ) : (
+                    <div className="list-subtitle">Unknown artist</div>
+                  )}
                 </div>
                 {onPlayAlbum && (
                   <button
@@ -281,8 +291,8 @@ export function Search({ connected, onSearchAll, onAddToQueue, onAddToQueueNext,
                 onClick={() => handleArtistClick(artist)}
               >
                 <div className="list-thumb artist-thumb">
-                  {artist.picture ? (
-                    <img src={artist.picture} alt={artist.name} />
+                  {getArtistImage(artist) ? (
+                    <img src={getArtistImage(artist)!} alt={artist.name} />
                   ) : (
                     <div className="thumb-placeholder" />
                   )}
@@ -328,6 +338,21 @@ function getTrackImage(track: SearchTrack): string | null {
 
 function getAlbumImage(album: SearchAlbum): string | null {
   const image = album.image;
+  if (!image) return null;
+  return (
+    image.mega ||
+    image.extralarge ||
+    image.large ||
+    image.thumbnail ||
+    image.small ||
+    null
+  );
+}
+
+function getArtistImage(artist: SearchArtist): string | null {
+  // Try picture first (string), then image object
+  if (artist.picture) return artist.picture;
+  const image = artist.image;
   if (!image) return null;
   return (
     image.mega ||

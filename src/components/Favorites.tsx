@@ -202,7 +202,15 @@ export function Favorites({
                           {track.title}
                           {track.hires && <span className="hires-badge-small">HR</span>}
                         </div>
-                        <div className="list-subtitle">{track.performer.name}</div>
+                        <button
+                          className="track-artist-link"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            navigate(`/artist/${track.performer.id}`);
+                          }}
+                        >
+                          {track.performer.name}
+                        </button>
                       </div>
                       <button
                         className="fav-btn active"
@@ -271,9 +279,17 @@ export function Favorites({
                           {album.title}
                           {album.hires && <span className="hires-badge">Hi-Res</span>}
                         </div>
-                        <div className="list-subtitle">
-                          {album.artist?.name || "Unknown artist"}
-                        </div>
+                        {album.artist && (
+                          <button
+                            className="track-artist-link"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              navigate(`/artist/${album.artist.id}`);
+                            }}
+                          >
+                            {album.artist.name}
+                          </button>
+                        )}
                       </div>
                       <button
                         className="fav-btn active"
