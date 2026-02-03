@@ -1,0 +1,113 @@
+{
+  "app": {
+    "name": "QBZ Control",
+    "tagline": "Télécommande pour QBZ"
+  },
+  "tabs": {
+    "install": "Installer",
+    "pairing": "Associer",
+    "controls": "Contrôles",
+    "search": "Recherche",
+    "settings": "Paramètres"
+  },
+  "install": {
+    "title": "Installer QBZ Control",
+    "subtitle": "Ajoutez à l'écran d'accueil pour une meilleure expérience",
+    "description": "QBZ Control fonctionne mieux en tant qu'application installée. Vous bénéficierez d'une expérience plein écran et d'un accès rapide depuis votre écran d'accueil.",
+    "button": "Installer l'app",
+    "skip": "Continuer dans le navigateur",
+    "alreadyInstalled": "Application installée",
+    "openApp": "Ouvrir l'application",
+    "iosStep1": "Appuyez sur Partager",
+    "iosStep2": "Appuyez sur Ajouter à l'écran d'accueil",
+    "iosStep3": "Ouvrez depuis l'écran d'accueil",
+    "androidStep1": "Ouvrez le menu",
+    "androidStep2": "Appuyez sur Installer l'app"
+  },
+  "pairing": {
+    "title": "Se connecter à QBZ",
+    "subtitle": "Associez avec votre application de bureau",
+    "scanQr": "Scanner le code QR",
+    "scanQrDesc": "Ouvrez QBZ → Paramètres → Contrôle à distance et scannez le code QR",
+    "manualEntry": "Ou entrez manuellement",
+    "baseUrl": "URL de base",
+    "baseUrlPlaceholder": "http://192.168.1.100:9876",
+    "token": "Jeton",
+    "tokenPlaceholder": "Collez le jeton de QBZ",
+    "connect": "Connecter",
+    "testing": "Test de connexion...",
+    "testConnection": "Tester la connexion",
+    "connected": "Connecté",
+    "connectionFailed": "Échec de la connexion",
+    "howTo": "Comment associer",
+    "step1": "Ouvrez QBZ sur votre ordinateur",
+    "step2": "Allez dans Paramètres → Contrôle à distance",
+    "step3": "Activez le contrôle à distance",
+    "step4": "Scannez le code QR ou copiez l'URL et le jeton"
+  },
+  "controls": {
+    "title": "En lecture",
+    "notPlaying": "Rien en lecture",
+    "notPlayingDesc": "Lancez quelque chose sur QBZ",
+    "play": "Lecture",
+    "pause": "Pause",
+    "next": "Suivant",
+    "previous": "Précédent",
+    "shuffle": "Aléatoire",
+    "repeat": "Répéter",
+    "volume": "Volume",
+    "mute": "Muet",
+    "unmute": "Rétablir le son"
+  },
+  "search": {
+    "title": "Recherche",
+    "placeholder": "Rechercher des pistes...",
+    "searching": "Recherche...",
+    "noResults": "Aucun résultat",
+    "noResultsDesc": "Essayez un autre terme de recherche",
+    "hint": "Rechercher dans le catalogue Qobuz"
+  },
+  "settings": {
+    "title": "Paramètres",
+    "connection": "Connexion",
+    "connectedTo": "Connecté à",
+    "notConnected": "Non connecté",
+    "disconnect": "Déconnecter",
+    "disconnectConfirm": "Êtes-vous sûr de vouloir vous déconnecter ?",
+    "appearance": "Apparence",
+    "theme": "Thème",
+    "themeSystem": "Système",
+    "themeDark": "Sombre",
+    "themeLight": "Clair",
+    "themeOled": "OLED",
+    "language": "Langue",
+    "about": "À propos",
+    "version": "Version",
+    "github": "GitHub",
+    "reportIssue": "Signaler un problème"
+  },
+  "status": {
+    "connected": "Connecté à {name}",
+    "connecting": "Connexion...",
+    "disconnected": "Non connecté",
+    "reconnecting": "Reconnexion...",
+    "error": "Erreur de connexion"
+  },
+  "errors": {
+    "connectionFailed": "Échec de la connexion",
+    "connectionLost": "Connexion perdue",
+    "networkError": "Erreur réseau",
+    "invalidToken": "Jeton invalide",
+    "serverError": "Erreur serveur",
+    "timeout": "Délai d'attente dépassé"
+  },
+  "actions": {
+    "cancel": "Annuler",
+    "confirm": "Confirmer",
+    "retry": "Réessayer",
+    "close": "Fermer",
+    "save": "Enregistrer",
+    "copy": "Copier",
+    "copied": "Copié !"
+  }
+}

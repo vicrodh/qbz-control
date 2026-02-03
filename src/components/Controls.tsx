@@ -1,4 +1,5 @@
 import { useMemo, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Layout } from "./Layout";
 import { IconNext, IconPause, IconPlay, IconPrevious } from "./Icons";
 import { clamp, formatTime } from "../lib/format";
@@ -29,6 +30,7 @@ export function Controls({
   onSeek,
   onVolume
 }: ControlsProps) {
+  const { t } = useTranslation();
   const [seekValue, setSeekValue] = useState<number | null>(null);
   const volumeTimeout = useRef<number | null>(null);
 
@@ -68,9 +70,9 @@ export function Controls({
         </div>
 
         <div style={{ width: "100%" }}>
-          <div className="track-title">{track?.title || "No track"}</div>
+          <div className="track-title">{track?.title || t('controls.notPlaying')}</div>
           <div className="track-subtitle">
-            {track ? `${track.artist} — ${track.album}` : "---"}
+            {track ? `${track.artist} — ${track.album}` : t('controls.notPlayingDesc')}
           </div>
         </div>
 
@@ -93,24 +95,35 @@ export function Controls({
         </div>
 
         <div className="control-row">
-          <button className="control-btn" onClick={onPrevious} disabled={!connected}>
+          <button
+            className="control-btn"
+            onClick={onPrevious}
+            disabled={!connected}
+            aria-label={t('controls.previous')}
+          >
             <IconPrevious />
           </button>
           <button
             className="control-btn primary"
             onClick={isPlaying ? onPause : onPlay}
             disabled={!connected}
+            aria-label={isPlaying ? t('controls.pause') : t('controls.play')}
           >
             {isPlaying ? <IconPause /> : <IconPlay />}
           </button>
-          <button className="control-btn" onClick={onNext} disabled={!connected}>
+          <button
+            className="control-btn"
+            onClick={onNext}
+            disabled={!connected}
+            aria-label={t('controls.next')}
+          >
             <IconNext />
           </button>
         </div>
 
         <div style={{ width: "100%" }}>
           <div className="text-secondary" style={{ fontSize: "12px", marginBottom: "10px" }}>
-            Volume
+            {t('controls.volume')}
           </div>
           <input
             className="range"

@@ -1,0 +1,113 @@
+{
+  "app": {
+    "name": "QBZ Control",
+    "tagline": "Remote control for QBZ"
+  },
+  "tabs": {
+    "install": "Install",
+    "pairing": "Pair",
+    "controls": "Controls",
+    "search": "Search",
+    "settings": "Settings"
+  },
+  "install": {
+    "title": "Install QBZ Control",
+    "subtitle": "Add to your home screen for the best experience",
+    "description": "QBZ Control works best as an installed app. You'll get a fullscreen experience and quick access from your home screen.",
+    "button": "Install App",
+    "skip": "Continue in browser",
+    "alreadyInstalled": "App installed",
+    "openApp": "Open in app",
+    "iosStep1": "Tap Share",
+    "iosStep2": "Tap Add to Home Screen",
+    "iosStep3": "Open from Home Screen",
+    "androidStep1": "Open menu",
+    "androidStep2": "Tap Install app"
+  },
+  "pairing": {
+    "title": "Connect to QBZ",
+    "subtitle": "Pair with your desktop app",
+    "scanQr": "Scan QR Code",
+    "scanQrDesc": "Open QBZ Settings → Remote Control and scan the QR code",
+    "manualEntry": "Or enter manually",
+    "baseUrl": "Base URL",
+    "baseUrlPlaceholder": "http://192.168.1.100:9876",
+    "token": "Token",
+    "tokenPlaceholder": "Paste token from QBZ",
+    "connect": "Connect",
+    "testing": "Testing connection...",
+    "testConnection": "Test Connection",
+    "connected": "Connected",
+    "connectionFailed": "Connection failed",
+    "howTo": "How to pair",
+    "step1": "Open QBZ on your computer",
+    "step2": "Go to Settings → Remote Control",
+    "step3": "Enable Remote Control",
+    "step4": "Scan the QR code or copy the URL and token"
+  },
+  "controls": {
+    "title": "Now Playing",
+    "notPlaying": "Nothing playing",
+    "notPlayingDesc": "Start playing something on QBZ",
+    "play": "Play",
+    "pause": "Pause",
+    "next": "Next",
+    "previous": "Previous",
+    "shuffle": "Shuffle",
+    "repeat": "Repeat",
+    "volume": "Volume",
+    "mute": "Mute",
+    "unmute": "Unmute"
+  },
+  "search": {
+    "title": "Search",
+    "placeholder": "Search tracks...",
+    "searching": "Searching...",
+    "noResults": "No results found",
+    "noResultsDesc": "Try a different search term",
+    "hint": "Search the Qobuz catalog"
+  },
+  "settings": {
+    "title": "Settings",
+    "connection": "Connection",
+    "connectedTo": "Connected to",
+    "notConnected": "Not connected",
+    "disconnect": "Disconnect",
+    "disconnectConfirm": "Are you sure you want to disconnect?",
+    "appearance": "Appearance",
+    "theme": "Theme",
+    "themeSystem": "System",
+    "themeDark": "Dark",
+    "themeLight": "Light",
+    "themeOled": "OLED",
+    "language": "Language",
+    "about": "About",
+    "version": "Version",
+    "github": "GitHub",
+    "reportIssue": "Report an issue"
+  },
+  "status": {
+    "connected": "Connected to {name}",
+    "connecting": "Connecting...",
+    "disconnected": "Not connected",
+    "reconnecting": "Reconnecting...",
+    "error": "Connection error"
+  },
+  "errors": {
+    "connectionFailed": "Failed to connect",
+    "connectionLost": "Connection lost",
+    "networkError": "Network error",
+    "invalidToken": "Invalid token",
+    "serverError": "Server error",
+    "timeout": "Request timed out"
+  },
+  "actions": {
+    "cancel": "Cancel",
+    "confirm": "Confirm",
+    "retry": "Retry",
+    "close": "Close",
+    "save": "Save",
+    "copy": "Copy",
+    "copied": "Copied!"
+  }
+}

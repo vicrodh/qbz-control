@@ -1,0 +1,113 @@
+{
+  "app": {
+    "name": "QBZ Control",
+    "tagline": "Control remoto para QBZ"
+  },
+  "tabs": {
+    "install": "Instalar",
+    "pairing": "Conectar",
+    "controls": "Controles",
+    "search": "Buscar",
+    "settings": "Ajustes"
+  },
+  "install": {
+    "title": "Instalar QBZ Control",
+    "subtitle": "Agrega a tu pantalla de inicio para mejor experiencia",
+    "description": "QBZ Control funciona mejor como app instalada. Tendrás una experiencia de pantalla completa y acceso rápido desde tu pantalla de inicio.",
+    "button": "Instalar App",
+    "skip": "Continuar en navegador",
+    "alreadyInstalled": "App instalada",
+    "openApp": "Abrir en app",
+    "iosStep1": "Toca Compartir",
+    "iosStep2": "Toca Agregar a inicio",
+    "iosStep3": "Abre desde inicio",
+    "androidStep1": "Abre el menú",
+    "androidStep2": "Toca Instalar app"
+  },
+  "pairing": {
+    "title": "Conectar con QBZ",
+    "subtitle": "Empareja con tu app de escritorio",
+    "scanQr": "Escanear Código QR",
+    "scanQrDesc": "Abre QBZ → Ajustes → Control Remoto y escanea el código QR",
+    "manualEntry": "O ingresa manualmente",
+    "baseUrl": "URL Base",
+    "baseUrlPlaceholder": "http://192.168.1.100:9876",
+    "token": "Token",
+    "tokenPlaceholder": "Pega el token de QBZ",
+    "connect": "Conectar",
+    "testing": "Probando conexión...",
+    "testConnection": "Probar Conexión",
+    "connected": "Conectado",
+    "connectionFailed": "Conexión fallida",
+    "howTo": "Cómo emparejar",
+    "step1": "Abre QBZ en tu computadora",
+    "step2": "Ve a Ajustes → Control Remoto",
+    "step3": "Activa Control Remoto",
+    "step4": "Escanea el código QR o copia la URL y el token"
+  },
+  "controls": {
+    "title": "Reproduciendo",
+    "notPlaying": "Nada reproduciéndose",
+    "notPlayingDesc": "Reproduce algo en QBZ",
+    "play": "Reproducir",
+    "pause": "Pausar",
+    "next": "Siguiente",
+    "previous": "Anterior",
+    "shuffle": "Aleatorio",
+    "repeat": "Repetir",
+    "volume": "Volumen",
+    "mute": "Silenciar",
+    "unmute": "Activar sonido"
+  },
+  "search": {
+    "title": "Buscar",
+    "placeholder": "Buscar canciones...",
+    "searching": "Buscando...",
+    "noResults": "Sin resultados",
+    "noResultsDesc": "Intenta con otro término de búsqueda",
+    "hint": "Busca en el catálogo de Qobuz"
+  },
+  "settings": {
+    "title": "Ajustes",
+    "connection": "Conexión",
+    "connectedTo": "Conectado a",
+    "notConnected": "No conectado",
+    "disconnect": "Desconectar",
+    "disconnectConfirm": "¿Seguro que quieres desconectar?",
+    "appearance": "Apariencia",
+    "theme": "Tema",
+    "themeSystem": "Sistema",
+    "themeDark": "Oscuro",
+    "themeLight": "Claro",
+    "themeOled": "OLED",
+    "language": "Idioma",
+    "about": "Acerca de",
+    "version": "Versión",
+    "github": "GitHub",
+    "reportIssue": "Reportar problema"
+  },
+  "status": {
+    "connected": "Conectado a {name}",
+    "connecting": "Conectando...",
+    "disconnected": "No conectado",
+    "reconnecting": "Reconectando...",
+    "error": "Error de conexión"
+  },
+  "errors": {
+    "connectionFailed": "Error al conectar",
+    "connectionLost": "Conexión perdida",
+    "networkError": "Error de red",
+    "invalidToken": "Token inválido",
+    "serverError": "Error del servidor",
+    "timeout": "Tiempo de espera agotado"
+  },
+  "actions": {
+    "cancel": "Cancelar",
+    "confirm": "Confirmar",
+    "retry": "Reintentar",
+    "close": "Cerrar",
+    "save": "Guardar",
+    "copy": "Copiar",
+    "copied": "¡Copiado!"
+  }
+}

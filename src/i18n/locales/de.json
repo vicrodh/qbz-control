@@ -1,0 +1,113 @@
+{
+  "app": {
+    "name": "QBZ Control",
+    "tagline": "Fernbedienung für QBZ"
+  },
+  "tabs": {
+    "install": "Installieren",
+    "pairing": "Koppeln",
+    "controls": "Steuerung",
+    "search": "Suche",
+    "settings": "Einstellungen"
+  },
+  "install": {
+    "title": "QBZ Control installieren",
+    "subtitle": "Zum Startbildschirm hinzufügen für beste Erfahrung",
+    "description": "QBZ Control funktioniert am besten als installierte App. Sie erhalten eine Vollbild-Erfahrung und schnellen Zugriff vom Startbildschirm.",
+    "button": "App installieren",
+    "skip": "Im Browser fortfahren",
+    "alreadyInstalled": "App installiert",
+    "openApp": "In App öffnen",
+    "iosStep1": "Tippen Sie auf Teilen",
+    "iosStep2": "Tippen Sie auf Zum Home-Bildschirm",
+    "iosStep3": "Vom Home-Bildschirm öffnen",
+    "androidStep1": "Menü öffnen",
+    "androidStep2": "Tippen Sie auf App installieren"
+  },
+  "pairing": {
+    "title": "Mit QBZ verbinden",
+    "subtitle": "Mit Ihrer Desktop-App koppeln",
+    "scanQr": "QR-Code scannen",
+    "scanQrDesc": "Öffnen Sie QBZ → Einstellungen → Fernsteuerung und scannen Sie den QR-Code",
+    "manualEntry": "Oder manuell eingeben",
+    "baseUrl": "Basis-URL",
+    "baseUrlPlaceholder": "http://192.168.1.100:9876",
+    "token": "Token",
+    "tokenPlaceholder": "Token von QBZ einfügen",
+    "connect": "Verbinden",
+    "testing": "Verbindung wird getestet...",
+    "testConnection": "Verbindung testen",
+    "connected": "Verbunden",
+    "connectionFailed": "Verbindung fehlgeschlagen",
+    "howTo": "So koppeln Sie",
+    "step1": "Öffnen Sie QBZ auf Ihrem Computer",
+    "step2": "Gehen Sie zu Einstellungen → Fernsteuerung",
+    "step3": "Aktivieren Sie die Fernsteuerung",
+    "step4": "Scannen Sie den QR-Code oder kopieren Sie URL und Token"
+  },
+  "controls": {
+    "title": "Aktuelle Wiedergabe",
+    "notPlaying": "Keine Wiedergabe",
+    "notPlayingDesc": "Starten Sie die Wiedergabe in QBZ",
+    "play": "Abspielen",
+    "pause": "Pause",
+    "next": "Weiter",
+    "previous": "Zurück",
+    "shuffle": "Zufällig",
+    "repeat": "Wiederholen",
+    "volume": "Lautstärke",
+    "mute": "Stumm",
+    "unmute": "Ton an"
+  },
+  "search": {
+    "title": "Suche",
+    "placeholder": "Titel suchen...",
+    "searching": "Suche...",
+    "noResults": "Keine Ergebnisse",
+    "noResultsDesc": "Versuchen Sie einen anderen Suchbegriff",
+    "hint": "Im Qobuz-Katalog suchen"
+  },
+  "settings": {
+    "title": "Einstellungen",
+    "connection": "Verbindung",
+    "connectedTo": "Verbunden mit",
+    "notConnected": "Nicht verbunden",
+    "disconnect": "Trennen",
+    "disconnectConfirm": "Möchten Sie die Verbindung wirklich trennen?",
+    "appearance": "Darstellung",
+    "theme": "Design",
+    "themeSystem": "System",
+    "themeDark": "Dunkel",
+    "themeLight": "Hell",
+    "themeOled": "OLED",
+    "language": "Sprache",
+    "about": "Über",
+    "version": "Version",
+    "github": "GitHub",
+    "reportIssue": "Problem melden"
+  },
+  "status": {
+    "connected": "Verbunden mit {name}",
+    "connecting": "Verbindung wird hergestellt...",
+    "disconnected": "Nicht verbunden",
+    "reconnecting": "Verbindung wird wiederhergestellt...",
+    "error": "Verbindungsfehler"
+  },
+  "errors": {
+    "connectionFailed": "Verbindung fehlgeschlagen",
+    "connectionLost": "Verbindung verloren",
+    "networkError": "Netzwerkfehler",
+    "invalidToken": "Ungültiges Token",
+    "serverError": "Serverfehler",
+    "timeout": "Zeitüberschreitung"
+  },
+  "actions": {
+    "cancel": "Abbrechen",
+    "confirm": "Bestätigen",
+    "retry": "Erneut versuchen",
+    "close": "Schließen",
+    "save": "Speichern",
+    "copy": "Kopieren",
+    "copied": "Kopiert!"
+  }
+}

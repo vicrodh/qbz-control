@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Layout } from "./Layout";
 import type { SearchResultsPage, SearchTrack } from "../lib/types";
 
@@ -8,6 +9,7 @@ type SearchProps = {
 };
 
 export function Search({ connected, onSearch }: SearchProps) {
+  const { t } = useTranslation();
   const [query, setQuery] = useState("");
   const [results, setResults] = useState<SearchTrack[]>([]);
   const [loading, setLoading] = useState(false);
@@ -30,15 +32,15 @@ export function Search({ connected, onSearch }: SearchProps) {
       <div className="stack">
         {!connected ? (
           <div className="card">
-            <div className="section-subtitle">Connect to QBZ</div>
-            <p className="text-secondary">Pair with the desktop app to enable search.</p>
+            <div className="section-subtitle">{t('pairing.title')}</div>
+            <p className="text-secondary">{t('search.hint')}</p>
           </div>
         ) : null}
 
         <div className="field">
           <input
             type="search"
-            placeholder="Search tracks"
+            placeholder={t('search.placeholder')}
             value={query}
             onChange={(event) => setQuery(event.target.value)}
             onKeyDown={(event) => {
@@ -51,16 +53,7 @@ export function Search({ connected, onSearch }: SearchProps) {
 
         <div style={{ display: "flex", gap: "8px" }}>
           <button className="primary" disabled={!connected} onClick={handleSearch}>
-            {loading ? "Searching..." : "Search"}
-          </button>
-          <button className="ghost" disabled>
-            Tracks
-          </button>
-          <button className="ghost" disabled>
-            Albums
-          </button>
-          <button className="ghost" disabled>
-            Artists
+            {loading ? t('search.searching') : t('search.title')}
           </button>
         </div>
 
@@ -80,17 +73,14 @@ export function Search({ connected, onSearch }: SearchProps) {
                     "Unknown artist"}
                 </div>
               </div>
-              <button className="secondary" disabled>
-                +
-              </button>
             </div>
           ))}
         </div>
 
         {hasSearched && results.length === 0 && !loading ? (
           <div className="card">
-            <div className="section-subtitle">No results</div>
-            <p className="text-secondary">Try a different query.</p>
+            <div className="section-subtitle">{t('search.noResults')}</div>
+            <p className="text-secondary">{t('search.noResultsDesc')}</p>
           </div>
         ) : null}
       </div>

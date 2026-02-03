@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import QrScanner from "qr-scanner";
 import { Layout } from "./Layout";
 import { parseQrPayload } from "../lib/qr";
@@ -31,6 +32,7 @@ export function Pairing({
   isConnected
 }: PairingProps) {
   const navigate = useNavigate();
+  const { t } = useTranslation();
   const [localUrl, setLocalUrl] = useState(baseUrl);
   const [localToken, setLocalToken] = useState(token);
   const [isTesting, setIsTesting] = useState(false);
@@ -69,7 +71,7 @@ export function Pairing({
         const payload = typeof result === "string" ? result : result.data;
         const parsed = parseQrPayload(payload);
         if (!parsed) {
-          setScanError("Invalid QR payload.");
+          setScanError(t('errors.invalidToken'));
           return;
         }
 
@@ -80,7 +82,7 @@ export function Pairing({
           setScanActive(false);
           navigate("/controls");
         } else {
-          setScanError("Pairing failed. Check the desktop app.");
+          setScanError(t('pairing.connectionFailed'));
         }
       },
       {
@@ -91,7 +93,7 @@ export function Pairing({
     );
 
     scanner.start().catch((err) => {
-      setScanError(`Camera error: ${String(err)}`);
+      setScanError(`${t('errors.networkError')}: ${String(err)}`);
       setScanActive(false);
     });
 
@@ -99,30 +101,30 @@ export function Pairing({
       scanner.stop();
       scanner.destroy();
     };
-  }, [scanActive, onQrConfig, navigate]);
+  }, [scanActive, onQrConfig, navigate, t]);
 
   return (
     <Layout isConnected={isConnected}>
       <div className="stack">
-        <h1 className="section-title">Pair with QBZ</h1>
+        <h1 className="section-title">{t('pairing.title')}</h1>
 
         <div className="field">
-          <label htmlFor="baseUrl">Base URL</label>
+          <label htmlFor="baseUrl">{t('pairing.baseUrl')}</label>
           <input
             id="baseUrl"
             type="url"
-            placeholder="http://192.168.1.10:8182"
+            placeholder={t('pairing.baseUrlPlaceholder')}
             value={localUrl}
             onChange={(event) => setLocalUrl(event.target.value)}
           />
         </div>
 
         <div className="field">
-          <label htmlFor="token">Token</label>
+          <label htmlFor="token">{t('pairing.token')}</label>
           <input
             id="token"
             type="text"
-            placeholder="Paste token"
+            placeholder={t('pairing.tokenPlaceholder')}
             value={localToken}
             onChange={(event) => setLocalToken(event.target.value)}
           />
@@ -130,17 +132,17 @@ export function Pairing({
 
         <div style={{ display: "flex", gap: "8px" }}>
           <button className="primary" onClick={handleTest} disabled={isTesting}>
-            {isTesting ? "Testing..." : "Test Connection"}
+            {isTesting ? t('pairing.testing') : t('pairing.testConnection')}
           </button>
-          <button className="secondary" onClick={handleSave}>Save</button>
+          <button className="secondary" onClick={handleSave}>{t('actions.save')}</button>
         </div>
 
         <div className={`chip ${connected ? "connected" : ""}`}>{statusText}</div>
 
         <div className="card">
-          <div className="section-subtitle">Scan QR</div>
+          <div className="section-subtitle">{t('pairing.scanQr')}</div>
           <p className="text-secondary">
-            Use the QR from QBZ Settings to auto-fill the URL and token.
+            {t('pairing.scanQrDesc')}
           </p>
 
           <div className="qr-preview">
@@ -150,11 +152,11 @@ export function Pairing({
           <div style={{ display: "flex", gap: "8px" }}>
             {scanActive ? (
               <button className="secondary" onClick={() => setScanActive(false)}>
-                Stop Scan
+                {t('actions.cancel')}
               </button>
             ) : (
               <button className="primary" onClick={() => setScanActive(true)}>
-                Start Scan
+                {t('pairing.scanQr')}
               </button>
             )}
           </div>
