@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { Layout } from "./Layout";
 import { languages, saveLanguage } from "../i18n";
-import { type Theme, applyTheme, getStoredTheme, saveTheme } from "../lib/theme";
+import { type Theme, themes, applyTheme, getStoredTheme, saveTheme } from "../lib/theme";
 
 type SettingsProps = {
   baseUrl: string;
@@ -13,12 +13,6 @@ type SettingsProps = {
   onCopyToken: () => Promise<void>;
   onClear: () => void;
 };
-
-const themes: { value: Theme; labelKey: string }[] = [
-  { value: 'dark', labelKey: 'settings.themeDark' },
-  { value: 'light', labelKey: 'settings.themeLight' },
-  { value: 'oled', labelKey: 'settings.themeOled' }
-];
 
 export function Settings({ baseUrl, token, connected, statusText, onCopyToken, onClear }: SettingsProps) {
   const navigate = useNavigate();

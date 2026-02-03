@@ -57,3 +57,8 @@ export type ImageSet = {
   mega?: string | null;
   back?: string | null;
 };
+
+export type QueueAddResponse = {
+  success: boolean;
+  queueLength: number;
+};

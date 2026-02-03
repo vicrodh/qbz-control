@@ -51,6 +51,134 @@
   --shadow-soft: 0 10px 25px rgba(0, 0, 0, 0.1);
 }
 
+/* Theme: Warm */
+[data-theme="warm"] {
+  --bg-primary: #2b1a14;
+  --bg-secondary: #3a241a;
+  --bg-tertiary: #4a2f23;
+  --bg-hover: #5b3a2e;
+  --text-primary: #f5e9e2;
+  --text-secondary: #d8c3b7;
+  --text-muted: #bfa396;
+  --accent-primary: #e59866;
+  --accent-hover: #f0a77b;
+  --accent-active: #d88652;
+  --border-subtle: #4a2f23;
+  --border-strong: #5b3a2e;
+}
+
+/* Theme: Nord */
+[data-theme="nord"] {
+  --bg-primary: #1d2230;
+  --bg-secondary: #2a2f3c;
+  --bg-tertiary: #32384c;
+  --bg-hover: #3c4256;
+  --text-primary: #ececec;
+  --text-secondary: #c6c6c6;
+  --text-muted: #9999a3;
+  --accent-primary: #3584e4;
+  --accent-hover: #5f9ee6;
+  --accent-active: #1a5fb4;
+  --border-subtle: #2a2f3c;
+  --border-strong: #32384c;
+}
+
+/* Theme: Dracula */
+[data-theme="dracula"] {
+  --bg-primary: #282a36;
+  --bg-secondary: #21222c;
+  --bg-tertiary: #343746;
+  --bg-hover: #44475a;
+  --text-primary: #f8f8f2;
+  --text-secondary: #e2e2dc;
+  --text-muted: #6272a4;
+  --accent-primary: #bd93f9;
+  --accent-hover: #ff79c6;
+  --accent-active: #8be9fd;
+  --border-subtle: #343746;
+  --border-strong: #44475a;
+}
+
+/* Theme: Tokyo Night */
+[data-theme="tokyo-night"] {
+  --bg-primary: #1a1b26;
+  --bg-secondary: #16161e;
+  --bg-tertiary: #1c1d29;
+  --bg-hover: #202330;
+  --text-primary: #a9b1d6;
+  --text-secondary: #787c99;
+  --text-muted: #545c7e;
+  --accent-primary: #7aa2f7;
+  --accent-hover: #7dcfff;
+  --accent-active: #bb9af7;
+  --border-subtle: #0f0f14;
+  --border-strong: #202330;
+}
+
+/* Theme: Catppuccin Mocha */
+[data-theme="catppuccin-mocha"] {
+  --bg-primary: #1e1e2e;
+  --bg-secondary: #181825;
+  --bg-tertiary: #11111b;
+  --bg-hover: #313244;
+  --text-primary: #cdd6f4;
+  --text-secondary: #bac2de;
+  --text-muted: #a6adc8;
+  --accent-primary: #cba6f7;
+  --accent-hover: #89b4fa;
+  --accent-active: #f38ba8;
+  --border-subtle: #313244;
+  --border-strong: #45475a;
+}
+
+/* Theme: Rumi (Orange accent) */
+[data-theme="rumi"] {
+  --bg-primary: #000000;
+  --bg-secondary: #0d0d0d;
+  --bg-tertiary: #1a1a1a;
+  --bg-hover: #333333;
+  --text-primary: #f0f0f0;
+  --text-secondary: #b2b2b2;
+  --text-muted: #808080;
+  --accent-primary: #e58f24;
+  --accent-hover: #f0a53c;
+  --accent-active: #cc7a12;
+  --border-subtle: #1a1a1a;
+  --border-strong: #333333;
+}
+
+/* Theme: Mira */
+[data-theme="mira"] {
+  --bg-primary: #101820;
+  --bg-secondary: #141a28;
+  --bg-tertiary: #1d2635;
+  --bg-hover: #2a3448;
+  --text-primary: #e5e5e5;
+  --text-secondary: #b0b3c6;
+  --text-muted: #8a8da0;
+  --accent-primary: #d94685;
+  --accent-hover: #ff007f;
+  --accent-active: #ffd700;
+  --border-subtle: #202c3d;
+  --border-strong: #34405a;
+}
+
+/* Theme: Zoey */
+[data-theme="zoey"] {
+  --bg-primary: #151e2d;
+  --bg-secondary: #0e141e;
+  --bg-tertiary: #101a2a;
+  --bg-hover: #1b293e;
+  --text-primary: #e0e2d5;
+  --text-secondary: #b5b7aa;
+  --text-muted: #8e9080;
+  --accent-primary: #46b4d3;
+  --accent-hover: #5cc0d9;
+  --accent-active: #3a97b6;
+  --border-subtle: #0e141e;
+  --border-strong: #1b293e;
+}
+
 * {
   box-sizing: border-box;
 }
