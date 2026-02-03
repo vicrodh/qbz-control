@@ -3,6 +3,7 @@ import { Navigate, Route, Routes } from "react-router-dom";
 import { Install } from "./components/Install";
 import { Pairing } from "./components/Pairing";
 import { Controls } from "./components/Controls";
+import { Queue } from "./components/Queue";
 import { Search } from "./components/Search";
 import { Settings } from "./components/Settings";
 import { apiFetch, apiJson, buildWsUrl } from "./lib/api";
@@ -12,6 +13,7 @@ import type {
   NowPlayingResponse,
   PingResponse,
   PlaybackState,
+  QueueStateResponse,
   QueueTrack,
   SearchResultsPage,
   SearchTrack
@@ -30,6 +32,7 @@ export default function App() {
   const [deviceVersion, setDeviceVersion] = useState("-");
   const [playback, setPlayback] = useState<PlaybackState | null>(null);
   const [track, setTrack] = useState<QueueTrack | null>(null);
+  const [queueState, setQueueState] = useState<QueueStateResponse | null>(null);
   const [installEvent, setInstallEvent] = useState<BeforeInstallPromptEvent | null>(null);
   const [isStandalone, setIsStandalone] = useState(false);
 
@@ -113,6 +116,18 @@ export default function App() {
     }
   }, [connected, config]);
 
+  const refreshQueue = useCallback(async () => {
+    if (!connected || !config.baseUrl || !config.token) {
+      return;
+    }
+    try {
+      const data = await apiJson<QueueStateResponse>(config, "/api/queue");
+      setQueueState(data);
+    } catch (err) {
+      console.error("Failed to fetch queue:", err);
+    }
+  }, [connected, config]);
+
   const startPolling = useCallback(() => {
     if (refreshTimer.current) {
       window.clearInterval(refreshTimer.current);
@@ -129,9 +144,10 @@ export default function App() {
     testConnection(config).then((ok) => {
       if (ok) {
         refreshNowPlaying();
+        refreshQueue();
       }
     });
-  }, [config.baseUrl, config.token, testConnection, refreshNowPlaying]);
+  }, [config.baseUrl, config.token, testConnection, refreshNowPlaying, refreshQueue]);
 
   useEffect(() => {
     if (!connected) {
@@ -157,6 +173,7 @@ export default function App() {
     const ws = new WebSocket(buildWsUrl(config));
     ws.onmessage = () => {
       refreshNowPlaying();
+      refreshQueue();
     };
     ws.onclose = () => {
       // Keep polling running as fallback.
@@ -164,7 +181,7 @@ export default function App() {
     return () => {
       ws.close();
     };
-  }, [connected, config.baseUrl, config.token, refreshNowPlaying]);
+  }, [connected, config.baseUrl, config.token, refreshNowPlaying, refreshQueue]);
 
   const handlePlay = useCallback(async () => {
     if (!connected) return;
@@ -253,6 +270,23 @@ export default function App() {
     [connected, config]
   );
 
+  const handlePlayQueueIndex = useCallback(
+    async (index: number) => {
+      if (!connected) return;
+      try {
+        await apiFetch(config, "/api/queue/play", {
+          method: "POST",
+          body: JSON.stringify({ index })
+        });
+        await refreshNowPlaying();
+        await refreshQueue();
+      } catch (err) {
+        setStatusText(`Playback error: ${(err as Error).message}`);
+      }
+    },
+    [connected, config, refreshNowPlaying, refreshQueue]
+  );
+
   useEffect(() => {
     const updateStandalone = () => {
       setIsStandalone(window.matchMedia("(display-mode: standalone)").matches);
@@ -338,6 +372,16 @@ export default function App() {
             onPrevious={handlePrevious}
             onSeek={handleSeek}
             onVolume={handleVolume}
+          />
+        }
+      />
+      <Route
+        path="/queue"
+        element={
+          <Queue
+            connected={connected}
+            queueState={queueState}
+            onPlayIndex={handlePlayQueueIndex}
           />
         }
       />

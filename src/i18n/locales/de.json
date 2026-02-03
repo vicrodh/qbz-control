@@ -7,6 +7,7 @@
     "install": "Installieren",
     "pairing": "Koppeln",
     "controls": "Steuerung",
+    "queue": "Warteschlange",
     "search": "Suche",
     "settings": "Einstellungen"
   },
@@ -58,6 +59,23 @@
     "volume": "Lautstärke",
     "mute": "Stumm",
     "unmute": "Ton an"
+  },
+  "queue": {
+    "title": "Warteschlange",
+    "empty": "Warteschlange ist leer",
+    "emptyDesc": "Fügen Sie Titel aus der Suche hinzu oder starten Sie die Wiedergabe in QBZ",
+    "nowPlaying": "Aktuelle Wiedergabe",
+    "upNext": "Als nächstes",
+    "history": "Verlauf",
+    "trackCount": "{count} Titel",
+    "clearQueue": "Warteschlange leeren",
+    "shuffle": "Zufällig",
+    "repeat": "Wiederholen",
+    "repeatOff": "Aus",
+    "repeatAll": "Alle",
+    "repeatOne": "Einer",
+    "addToQueue": "Zur Warteschlange",
+    "added": "Zur Warteschlange hinzugefügt"
   },
   "search": {
     "title": "Suche",

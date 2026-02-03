@@ -62,3 +62,15 @@ export type QueueAddResponse = {
   success: boolean;
   queueLength: number;
 };
+
+export type RepeatMode = 'Off' | 'All' | 'One';
+
+export type QueueStateResponse = {
+  current_track: QueueTrack | null;
+  current_index: number | null;
+  upcoming: QueueTrack[];
+  history: QueueTrack[];
+  shuffle: boolean;
+  repeat: RepeatMode;
+  total_tracks: number;
+};

@@ -7,6 +7,7 @@
     "install": "Installer",
     "pairing": "Associer",
     "controls": "Contrôles",
+    "queue": "File",
     "search": "Recherche",
     "settings": "Paramètres"
   },
@@ -58,6 +59,23 @@
     "volume": "Volume",
     "mute": "Muet",
     "unmute": "Rétablir le son"
+  },
+  "queue": {
+    "title": "File d'attente",
+    "empty": "La file est vide",
+    "emptyDesc": "Ajoutez des pistes depuis la recherche ou lancez la lecture sur QBZ",
+    "nowPlaying": "En lecture",
+    "upNext": "Suivant",
+    "history": "Historique",
+    "trackCount": "{count} pistes",
+    "clearQueue": "Vider la file",
+    "shuffle": "Aléatoire",
+    "repeat": "Répéter",
+    "repeatOff": "Désactivé",
+    "repeatAll": "Tout",
+    "repeatOne": "Une",
+    "addToQueue": "Ajouter à la file",
+    "added": "Ajouté à la file"
   },
   "search": {
     "title": "Recherche",

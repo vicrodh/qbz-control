@@ -7,6 +7,7 @@
     "install": "Install",
     "pairing": "Pair",
     "controls": "Controls",
+    "queue": "Queue",
     "search": "Search",
     "settings": "Settings"
   },
@@ -58,6 +59,23 @@
     "volume": "Volume",
     "mute": "Mute",
     "unmute": "Unmute"
+  },
+  "queue": {
+    "title": "Queue",
+    "empty": "Queue is empty",
+    "emptyDesc": "Add tracks from search or start playing on QBZ",
+    "nowPlaying": "Now Playing",
+    "upNext": "Up Next",
+    "history": "History",
+    "trackCount": "{count} tracks",
+    "clearQueue": "Clear Queue",
+    "shuffle": "Shuffle",
+    "repeat": "Repeat",
+    "repeatOff": "Off",
+    "repeatAll": "All",
+    "repeatOne": "One",
+    "addToQueue": "Add to Queue",
+    "added": "Added to queue"
   },
   "search": {
     "title": "Search",

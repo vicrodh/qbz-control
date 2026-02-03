@@ -7,6 +7,7 @@
     "install": "Instalar",
     "pairing": "Conectar",
     "controls": "Controles",
+    "queue": "Cola",
     "search": "Buscar",
     "settings": "Ajustes"
   },
@@ -58,6 +59,23 @@
     "volume": "Volumen",
     "mute": "Silenciar",
     "unmute": "Activar sonido"
+  },
+  "queue": {
+    "title": "Cola",
+    "empty": "La cola está vacía",
+    "emptyDesc": "Agrega canciones desde búsqueda o reproduce algo en QBZ",
+    "nowPlaying": "Reproduciendo",
+    "upNext": "Siguiente",
+    "history": "Historial",
+    "trackCount": "{count} canciones",
+    "clearQueue": "Vaciar Cola",
+    "shuffle": "Aleatorio",
+    "repeat": "Repetir",
+    "repeatOff": "Off",
+    "repeatAll": "Todas",
+    "repeatOne": "Una",
+    "addToQueue": "Agregar a Cola",
+    "added": "Agregado a la cola"
   },
   "search": {
     "title": "Buscar",
