@@ -15,8 +15,7 @@ import type {
   PlaybackState,
   QueueStateResponse,
   QueueTrack,
-  SearchResultsPage,
-  SearchTrack
+  SearchAllResponse
 } from "./lib/types";
 
 type BeforeInstallPromptEvent = Event & {
@@ -278,13 +277,13 @@ export default function App() {
     [connected, config]
   );
 
-  const handleSearch = useCallback(
-    async (query: string): Promise<SearchResultsPage<SearchTrack> | null> => {
+  const handleSearchAll = useCallback(
+    async (query: string): Promise<SearchAllResponse | null> => {
       if (!connected) return null;
       try {
-        return await apiJson<SearchResultsPage<SearchTrack>>(
+        return await apiJson<SearchAllResponse>(
           config,
-          `/api/search?q=${encodeURIComponent(query)}&limit=20&offset=0`
+          `/api/search/all?q=${encodeURIComponent(query)}&limit=12&offset=0`
         );
       } catch (err) {
         setStatusText(`Search failed: ${(err as Error).message}`);
@@ -472,7 +471,7 @@ export default function App() {
         element={
           <Search
             connected={connected}
-            onSearch={handleSearch}
+            onSearchAll={handleSearchAll}
             onAddToQueue={handleAddToQueue}
           />
         }

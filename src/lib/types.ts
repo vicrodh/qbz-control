@@ -74,3 +74,29 @@ export type QueueStateResponse = {
   repeat: RepeatMode;
   total_tracks: number;
 };
+
+export type SearchArtist = {
+  id: number;
+  name: string;
+  picture?: string | null;
+  albums_count?: number;
+};
+
+export type SearchAlbum = {
+  id: string;
+  title: string;
+  artist: { id: number; name: string };
+  image?: ImageSet;
+  tracks_count?: number;
+  released_at?: number;
+  genre?: { name: string };
+  hires?: boolean;
+};
+
+export type SearchAllResponse = {
+  albums: SearchResultsPage<SearchAlbum>;
+  tracks: SearchResultsPage<SearchTrack>;
+  artists: SearchResultsPage<SearchArtist>;
+  playlists: SearchResultsPage<unknown>;
+  most_popular?: unknown;
+};

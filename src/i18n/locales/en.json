@@ -79,11 +79,15 @@
   },
   "search": {
     "title": "Search",
-    "placeholder": "Search tracks...",
+    "placeholder": "Search tracks, albums, artists...",
     "searching": "Searching...",
     "noResults": "No results found",
     "noResultsDesc": "Try a different search term",
-    "hint": "Search the Qobuz catalog"
+    "hint": "Search the Qobuz catalog",
+    "tracks": "Tracks",
+    "albums": "Albums",
+    "artists": "Artists",
+    "albumCount": "{{count}} albums"
   },
   "settings": {
     "title": "Settings",
