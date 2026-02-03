@@ -172,6 +172,7 @@
     "close": "Close",
     "save": "Save",
     "copy": "Copy",
-    "copied": "Copied!"
+    "copied": "Copied!",
+    "back": "Back"
   }
 }

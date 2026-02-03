@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { Layout } from "./Layout";
-import { IconPlus, IconPlay } from "./Icons";
+import { IconPlus, IconPlay, IconPlayNext, IconBack } from "./Icons";
 import type { QueueTrack, ImageSet } from "../lib/types";
 
 type AlbumTrack = {
@@ -33,9 +33,11 @@ type AlbumProps = {
   onGetAlbum: (albumId: string) => Promise<AlbumDetail | null>;
   onPlayAlbum: (albumId: string) => Promise<void>;
   onAddToQueue: (track: QueueTrack) => Promise<void>;
+  onAddToQueueNext: (track: QueueTrack) => Promise<void>;
+  onPlayTrack: (track: QueueTrack) => Promise<void>;
 };
 
-export function Album({ connected, onGetAlbum, onPlayAlbum, onAddToQueue }: AlbumProps) {
+export function Album({ connected, onGetAlbum, onPlayAlbum, onAddToQueue, onAddToQueueNext, onPlayTrack }: AlbumProps) {
   const { t } = useTranslation();
   const { albumId } = useParams<{ albumId: string }>();
   const navigate = useNavigate();
@@ -55,27 +57,65 @@ export function Album({ connected, onGetAlbum, onPlayAlbum, onAddToQueue }: Albu
     });
   }, [albumId, connected, onGetAlbum]);
 
+  const handleBack = () => {
+    navigate(-1);
+  };
+
+  const handleArtistClick = () => {
+    if (album?.artist?.id) {
+      navigate(`/artist/${album.artist.id}`);
+    }
+  };
+
   const handlePlayAlbum = async () => {
     if (!albumId) return;
     await onPlayAlbum(albumId);
     navigate("/controls");
   };
 
+  const createQueueTrack = (track: AlbumTrack): QueueTrack | null => {
+    if (!album) return null;
+    const artwork = album.image?.large || album.image?.small || undefined;
+    return {
+      id: track.id,
+      title: track.title,
+      artist: track.performer?.name || album.artist.name,
+      album: album.title,
+      duration_secs: track.duration,
+      artwork_url: artwork,
+      streamable: track.streamable
+    };
+  };
+
   const handleAddTrack = async (track: AlbumTrack) => {
-    if (!album) return;
+    const queueTrack = createQueueTrack(track);
+    if (!queueTrack) return;
     setAddingId(track.id);
     try {
-      const artwork = album.image?.large || album.image?.small || undefined;
-      const queueTrack: QueueTrack = {
-        id: track.id,
-        title: track.title,
-        artist: track.performer?.name || album.artist.name,
-        album: album.title,
-        duration_secs: track.duration,
-        artwork_url: artwork,
-        streamable: track.streamable
-      };
       await onAddToQueue(queueTrack);
+    } finally {
+      setAddingId(null);
+    }
+  };
+
+  const handleAddTrackNext = async (track: AlbumTrack) => {
+    const queueTrack = createQueueTrack(track);
+    if (!queueTrack) return;
+    setAddingId(track.id);
+    try {
+      await onAddToQueueNext(queueTrack);
+    } finally {
+      setAddingId(null);
+    }
+  };
+
+  const handlePlayTrack = async (track: AlbumTrack) => {
+    const queueTrack = createQueueTrack(track);
+    if (!queueTrack) return;
+    setAddingId(track.id);
+    try {
+      await onPlayTrack(queueTrack);
+      navigate("/controls");
     } finally {
       setAddingId(null);
     }
@@ -115,6 +155,10 @@ export function Album({ connected, onGetAlbum, onPlayAlbum, onAddToQueue }: Albu
   return (
     <Layout isConnected={connected}>
       <div className="stack">
+        <button className="back-button" onClick={handleBack}>
+          <IconBack size={20} />
+          <span>{t("actions.back")}</span>
+        </button>
         <div className="album-header">
           <div className="album-cover">
             {getAlbumImage() ? (
@@ -128,7 +172,9 @@ export function Album({ connected, onGetAlbum, onPlayAlbum, onAddToQueue }: Albu
               {album.title}
               {album.hires && <span className="hires-badge">Hi-Res</span>}
             </h1>
-            <div className="album-artist">{album.artist.name}</div>
+            <button className="link-button" onClick={handleArtistClick}>
+              {album.artist.name}
+            </button>
             {album.genre && <div className="album-meta">{album.genre.name}</div>}
             {album.release_date_original && (
               <div className="album-meta">{album.release_date_original.split("-")[0]}</div>
@@ -153,18 +199,47 @@ export function Album({ connected, onGetAlbum, onPlayAlbum, onAddToQueue }: Albu
                   {track.hires && <span className="hires-badge-small">HR</span>}
                 </div>
                 {track.performer && track.performer.name !== album.artist.name && (
-                  <div className="track-artist">{track.performer.name}</div>
+                  <button
+                    className="track-artist-link"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      navigate(`/artist/${track.performer!.id}`);
+                    }}
+                  >
+                    {track.performer.name}
+                  </button>
                 )}
               </div>
               <span className="track-duration">{formatDuration(track.duration)}</span>
-              <button
-                className="add-btn"
-                onClick={() => handleAddTrack(track)}
-                disabled={addingId === track.id || !track.streamable}
-                aria-label={t("queue.addToQueue")}
-              >
-                <IconPlus size={16} />
-              </button>
+              <div className="track-actions">
+                <button
+                  className="add-btn"
+                  onClick={() => handlePlayTrack(track)}
+                  disabled={addingId === track.id || !track.streamable}
+                  aria-label={t("queue.play")}
+                  title={t("queue.play")}
+                >
+                  <IconPlay size={14} />
+                </button>
+                <button
+                  className="add-btn"
+                  onClick={() => handleAddTrackNext(track)}
+                  disabled={addingId === track.id || !track.streamable}
+                  aria-label={t("queue.playNext")}
+                  title={t("queue.playNext")}
+                >
+                  <IconPlayNext size={14} />
+                </button>
+                <button
+                  className="add-btn"
+                  onClick={() => handleAddTrack(track)}
+                  disabled={addingId === track.id || !track.streamable}
+                  aria-label={t("queue.addToQueue")}
+                  title={t("queue.addToQueue")}
+                >
+                  <IconPlus size={14} />
+                </button>
+              </div>
             </div>
           ))}
         </div>

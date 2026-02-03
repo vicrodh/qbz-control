@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { Layout } from "./Layout";
+import { IconBack } from "./Icons";
 import type { ImageSet } from "../lib/types";
 
 type ArtistAlbum = {
@@ -46,6 +47,10 @@ export function Artist({ connected, onGetArtist, onPlayAlbum }: ArtistProps) {
     });
   }, [artistId, connected, onGetArtist]);
 
+  const handleBack = () => {
+    navigate(-1);
+  };
+
   const handleAlbumClick = async (albumId: string) => {
     navigate(`/album/${albumId}`);
   };
@@ -83,6 +88,10 @@ export function Artist({ connected, onGetArtist, onPlayAlbum }: ArtistProps) {
   return (
     <Layout isConnected={connected}>
       <div className="stack">
+        <button className="back-button" onClick={handleBack}>
+          <IconBack size={20} />
+          <span>{t("actions.back")}</span>
+        </button>
         <div className="artist-header">
           <div className="artist-picture">
             {artist.picture ? (

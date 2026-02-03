@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import { Link, NavLink } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { IconControls, IconQueue, IconSearch, IconSettings, IconHeart } from "./Icons";
 
@@ -20,9 +20,6 @@ export function Layout({ children, isConnected }: LayoutProps) {
         </div>
         <div className="top-actions">
           <div className={`connection-dot ${isConnected ? "connected" : ""}`} />
-          <Link to="/settings" aria-label={t('settings.title')}>
-            <IconSettings size={18} />
-          </Link>
         </div>
       </header>
 

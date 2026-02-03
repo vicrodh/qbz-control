@@ -1576,6 +1576,12 @@ button:disabled {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 12px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.album-grid .album-card {
+  min-width: 0; /* Prevent overflow */
 }
 
 .album-card {
@@ -1659,4 +1665,75 @@ button:disabled {
 .loading-text {
   font-size: 14px;
   color: var(--text-muted);
+}
+
+/* Back Button */
+.back-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 8px 12px;
+  border-radius: 8px;
+  background: transparent;
+  border: none;
+  color: var(--text-secondary);
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  margin-left: -12px;
+  transition: color 150ms ease, background 150ms ease;
+}
+
+.back-button:hover {
+  background: var(--bg-tertiary);
+  color: var(--text-primary);
+}
+
+.back-button:active {
+  transform: scale(0.98);
+}
+
+/* Link Button (for clickable artist/album names) */
+.link-button {
+  background: transparent;
+  border: none;
+  padding: 0;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-secondary);
+  cursor: pointer;
+  text-align: left;
+  transition: color 150ms ease;
+}
+
+.link-button:hover {
+  color: var(--accent-primary);
+}
+
+.link-button:active {
+  transform: none;
+}
+
+/* Track Artist Link (in album track list) */
+.track-artist-link {
+  background: transparent;
+  border: none;
+  padding: 0;
+  font-size: 12px;
+  color: var(--text-muted);
+  cursor: pointer;
+  text-align: left;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: block;
+  transition: color 150ms ease;
+}
+
+.track-artist-link:hover {
+  color: var(--accent-primary);
+}
+
+.track-artist-link:active {
+  transform: none;
 }
