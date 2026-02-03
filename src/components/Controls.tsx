@@ -34,7 +34,6 @@ export function Controls({
 
   const position = seekValue ?? playback?.position ?? 0;
   const duration = playback?.duration ?? 0;
-  const progress = duration ? (position / duration) * 100 : 0;
   const volumePercent = useMemo(() => {
     if (!playback) return 0;
     return clamp(Math.round(playback.volume * 100), 0, 100);
@@ -63,7 +62,9 @@ export function Controls({
         <div className="controls-art">
           {track?.artwork_url ? (
             <img src={track.artwork_url} alt={track.title} />
-          ) : null}
+          ) : (
+            <img src="/qbz-logo.svg" alt="QBZ logo" />
+          )}
         </div>
 
         <div style={{ width: "100%" }}>
