@@ -74,9 +74,6 @@ export function Controls({
         </div>
 
         <div style={{ width: "100%" }}>
-          <div className="progress-bar">
-            <div className="progress-fill" style={{ width: `${progress}%` }} />
-          </div>
           <div className="status-row" style={{ marginTop: "8px" }}>
             <span>{formatTime(position)}</span>
             <span>{formatTime(duration)}</span>
