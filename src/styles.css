@@ -462,7 +462,291 @@ button:disabled {
   background: rgba(34, 197, 94, 0.1);
 }
 
-/* Controls - Album Art */
+/* Player Container */
+.player-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  max-width: 400px;
+  margin: 0 auto;
+  padding: 8px 0;
+}
+
+/* Player Album Art */
+.player-art-wrapper {
+  width: 100%;
+  max-width: 300px;
+  aspect-ratio: 1;
+}
+
+.player-art {
+  width: 100%;
+  height: 100%;
+  border-radius: 12px;
+  overflow: hidden;
+  background: var(--bg-tertiary);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+}
+
+.player-art img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.player-art-placeholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg-tertiary);
+}
+
+.player-art-placeholder img {
+  width: 60%;
+  height: 60%;
+  opacity: 0.3;
+}
+
+/* Player Track Info */
+.player-info {
+  text-align: center;
+  width: 100%;
+  padding: 0 16px;
+}
+
+.player-track-title {
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 4px;
+  letter-spacing: -0.02em;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.player-track-artist {
+  font-size: 15px;
+  color: var(--text-secondary);
+  margin-bottom: 2px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.player-track-album {
+  font-size: 13px;
+  color: var(--text-muted);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Player Progress */
+.player-progress {
+  width: 100%;
+  padding: 0 8px;
+}
+
+.player-progress-bar {
+  position: relative;
+  height: 4px;
+  background: var(--bg-tertiary);
+  border-radius: 4px;
+  overflow: visible;
+}
+
+.player-progress-fill {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  background: var(--accent-primary);
+  border-radius: 4px;
+  transition: width 150ms linear;
+}
+
+.player-progress-input {
+  position: absolute;
+  top: -6px;
+  left: 0;
+  width: 100%;
+  height: 16px;
+  opacity: 0;
+  cursor: pointer;
+  margin: 0;
+}
+
+.player-time {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 8px;
+  font-size: 12px;
+  color: var(--text-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+/* Player Controls */
+.player-controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  padding: 8px 0;
+}
+
+.player-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  background: transparent;
+  color: var(--text-primary);
+  padding: 12px;
+  border-radius: 50%;
+  transition: all 150ms ease;
+  cursor: pointer;
+}
+
+.player-btn:hover:not(:disabled) {
+  background: var(--bg-tertiary);
+}
+
+.player-btn:active:not(:disabled) {
+  transform: scale(0.95);
+}
+
+.player-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.player-btn.primary {
+  width: 72px;
+  height: 72px;
+  background: var(--accent-primary);
+  color: #ffffff;
+  box-shadow: 0 4px 20px rgba(var(--accent-primary-rgb, 0, 122, 255), 0.4);
+}
+
+.player-btn.primary:hover:not(:disabled) {
+  background: var(--accent-hover);
+  transform: scale(1.02);
+}
+
+.player-btn.primary:active:not(:disabled) {
+  transform: scale(0.98);
+}
+
+.player-btn.secondary {
+  color: var(--text-muted);
+  padding: 10px;
+}
+
+.player-btn.secondary:hover:not(:disabled) {
+  color: var(--text-primary);
+}
+
+.player-btn.secondary.active {
+  color: var(--accent-primary);
+}
+
+/* Player Secondary Controls */
+.player-secondary {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 24px;
+  width: 100%;
+  padding: 8px 16px;
+  border-top: 1px solid var(--border-subtle);
+}
+
+.player-action {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  font-size: 12px;
+  padding: 8px 12px;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: all 150ms ease;
+}
+
+.player-action:hover:not(:disabled) {
+  background: var(--bg-tertiary);
+  color: var(--text-primary);
+}
+
+.player-action.active {
+  color: var(--accent-primary);
+  background: rgba(var(--accent-primary-rgb, 0, 122, 255), 0.1);
+}
+
+.player-action:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.player-action-label {
+  font-weight: 500;
+}
+
+/* Player Volume */
+.player-volume {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  padding: 12px 16px;
+  background: var(--bg-tertiary);
+  border-radius: 12px;
+  color: var(--text-muted);
+}
+
+.player-volume-input {
+  flex: 1;
+  height: 4px;
+  -webkit-appearance: none;
+  appearance: none;
+  background: var(--border-color);
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.player-volume-input::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--accent-primary);
+  cursor: pointer;
+}
+
+.player-volume-input::-moz-range-thumb {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--accent-primary);
+  border: none;
+  cursor: pointer;
+}
+
+/* Player Status */
+.player-status {
+  font-size: 11px;
+  color: var(--text-muted);
+  text-align: center;
+  padding: 4px 0;
+}
+
+/* Legacy Controls - Album Art (for backwards compatibility) */
 .controls-art {
   width: 280px;
   height: 280px;

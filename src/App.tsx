@@ -19,7 +19,8 @@ import type {
   QueueStateResponse,
   QueueTrack,
   SearchAllResponse,
-  FavoriteType
+  FavoriteType,
+  AutoplayMode
 } from "./lib/types";
 
 type BeforeInstallPromptEvent = Event & {
@@ -38,6 +39,7 @@ export default function App() {
   const [queueState, setQueueState] = useState<QueueStateResponse | null>(null);
   const [shuffle, setShuffle] = useState(false);
   const [repeat, setRepeat] = useState<'Off' | 'All' | 'One'>('Off');
+  const [autoplay, setAutoplay] = useState<AutoplayMode>('continue');
   const [installEvent, setInstallEvent] = useState<BeforeInstallPromptEvent | null>(null);
   const [isStandalone, setIsStandalone] = useState(false);
 
@@ -445,6 +447,38 @@ export default function App() {
     }
   }, [connected, config, repeat]);
 
+  const handleAutoplay = useCallback(async (mode: AutoplayMode) => {
+    if (!connected) return;
+    try {
+      await apiFetch(config, "/api/playback/autoplay", {
+        method: "POST",
+        body: JSON.stringify({ mode })
+      });
+      setAutoplay(mode);
+    } catch (err) {
+      setStatusText(`Autoplay error: ${(err as Error).message}`);
+    }
+  }, [connected, config]);
+
+  const fetchPlaybackPreferences = useCallback(async () => {
+    if (!connected) return;
+    try {
+      const prefs = await apiJson<{ autoplay_mode: string }>(config, "/api/playback/preferences");
+      if (prefs.autoplay_mode) {
+        setAutoplay(prefs.autoplay_mode as AutoplayMode);
+      }
+    } catch {
+      // Preferences not available, use default
+    }
+  }, [connected, config]);
+
+  // Fetch playback preferences when connected
+  useEffect(() => {
+    if (connected) {
+      fetchPlaybackPreferences();
+    }
+  }, [connected, fetchPlaybackPreferences]);
+
   useEffect(() => {
     const updateStandalone = () => {
       setIsStandalone(window.matchMedia("(display-mode: standalone)").matches);
@@ -526,6 +560,7 @@ export default function App() {
             statusLine={statusFooter}
             shuffle={shuffle}
             repeat={repeat}
+            autoplay={autoplay}
             onPlay={handlePlay}
             onPause={handlePause}
             onNext={handleNext}
@@ -534,6 +569,7 @@ export default function App() {
             onVolume={handleVolume}
             onShuffle={handleShuffle}
             onRepeat={handleRepeat}
+            onAutoplay={handleAutoplay}
           />
         }
       />

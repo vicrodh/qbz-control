@@ -59,7 +59,14 @@
     "repeat": "Repeat",
     "volume": "Volume",
     "mute": "Mute",
-    "unmute": "Unmute"
+    "unmute": "Unmute",
+    "autoplayOn": "Infinite",
+    "autoplayOff": "Off",
+    "autoplay": {
+      "continue": "Continue playing",
+      "track_only": "Play track only",
+      "infinite": "Infinite play"
+    }
   },
   "queue": {
     "title": "Queue",

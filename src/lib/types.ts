@@ -65,6 +65,8 @@ export type QueueAddResponse = {
 
 export type RepeatMode = 'Off' | 'All' | 'One';
 
+export type AutoplayMode = 'continue' | 'track_only' | 'infinite';
+
 export type QueueStateResponse = {
   current_track: QueueTrack | null;
   current_index: number | null;

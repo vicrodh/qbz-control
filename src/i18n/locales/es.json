@@ -59,7 +59,14 @@
     "repeat": "Repetir",
     "volume": "Volumen",
     "mute": "Silenciar",
-    "unmute": "Activar sonido"
+    "unmute": "Activar sonido",
+    "autoplayOn": "Infinito",
+    "autoplayOff": "Off",
+    "autoplay": {
+      "continue": "Continuar reproduciendo",
+      "track_only": "Solo esta canción",
+      "infinite": "Reproducción infinita"
+    }
   },
   "queue": {
     "title": "Cola",
