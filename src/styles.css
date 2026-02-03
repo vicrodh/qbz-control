@@ -938,3 +938,29 @@ button:disabled {
   text-align: center;
   padding: 8px 0;
 }
+
+/* Add to Queue Button */
+.add-btn {
+  width: 36px;
+  height: 36px;
+  min-width: 36px;
+  padding: 0;
+  border-radius: 999px;
+  background: var(--bg-tertiary);
+  border: 1px solid var(--border-strong);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-secondary);
+  flex-shrink: 0;
+}
+
+.add-btn:hover {
+  background: var(--accent-primary);
+  border-color: var(--accent-primary);
+  color: #ffffff;
+}
+
+.add-btn:disabled {
+  opacity: 0.5;
+}

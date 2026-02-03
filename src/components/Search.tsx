@@ -1,19 +1,22 @@
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Layout } from "./Layout";
-import type { SearchResultsPage, SearchTrack } from "../lib/types";
+import { IconPlus } from "./Icons";
+import type { QueueTrack, SearchResultsPage, SearchTrack } from "../lib/types";
 
 type SearchProps = {
   connected: boolean;
   onSearch: (query: string) => Promise<SearchResultsPage<SearchTrack> | null>;
+  onAddToQueue: (track: QueueTrack) => Promise<void>;
 };
 
-export function Search({ connected, onSearch }: SearchProps) {
+export function Search({ connected, onSearch, onAddToQueue }: SearchProps) {
   const { t } = useTranslation();
   const [query, setQuery] = useState("");
   const [results, setResults] = useState<SearchTrack[]>([]);
   const [loading, setLoading] = useState(false);
   const [hasSearched, setHasSearched] = useState(false);
+  const [addingId, setAddingId] = useState<number | null>(null);
 
   const handleSearch = async () => {
     const trimmed = query.trim();
@@ -25,6 +28,33 @@ export function Search({ connected, onSearch }: SearchProps) {
     const data = await onSearch(trimmed);
     setResults(data?.items?.slice(0, 8) || []);
     setLoading(false);
+  };
+
+  const handleAddToQueue = async (track: SearchTrack) => {
+    setAddingId(track.id);
+    try {
+      const artistName = track.performer?.name ||
+        (typeof track.artist === "string" ? track.artist : track.artist?.name) ||
+        "Unknown artist";
+      const albumTitle = typeof track.album === "string"
+        ? track.album
+        : track.album?.title || "Unknown album";
+      const artworkUrl = getTrackImage(track);
+
+      const queueTrack: QueueTrack = {
+        id: track.id,
+        title: track.title,
+        artist: artistName,
+        album: albumTitle,
+        duration_secs: track.duration,
+        artwork_url: artworkUrl,
+        streamable: true
+      };
+
+      await onAddToQueue(queueTrack);
+    } finally {
+      setAddingId(null);
+    }
   };
 
   return (
@@ -63,7 +93,9 @@ export function Search({ connected, onSearch }: SearchProps) {
               <div className="list-thumb">
                 {getTrackImage(track) ? (
                   <img src={getTrackImage(track)!} alt={track.title} />
-                ) : null}
+                ) : (
+                  <div className="thumb-placeholder" />
+                )}
               </div>
               <div style={{ flex: 1, minWidth: 0 }}>
                 <div className="list-title">{track.title}</div>
@@ -73,6 +105,14 @@ export function Search({ connected, onSearch }: SearchProps) {
                     "Unknown artist"}
                 </div>
               </div>
+              <button
+                className="add-btn"
+                onClick={() => handleAddToQueue(track)}
+                disabled={addingId === track.id}
+                aria-label={t("queue.addToQueue")}
+              >
+                <IconPlus size={18} />
+              </button>
             </div>
           ))}
         </div>

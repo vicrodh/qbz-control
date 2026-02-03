@@ -287,6 +287,22 @@ export default function App() {
     [connected, config, refreshNowPlaying, refreshQueue]
   );
 
+  const handleAddToQueue = useCallback(
+    async (track: QueueTrack) => {
+      if (!connected) return;
+      try {
+        await apiFetch(config, "/api/queue/add", {
+          method: "POST",
+          body: JSON.stringify({ track })
+        });
+        await refreshQueue();
+      } catch (err) {
+        setStatusText(`Failed to add to queue: ${(err as Error).message}`);
+      }
+    },
+    [connected, config, refreshQueue]
+  );
+
   useEffect(() => {
     const updateStandalone = () => {
       setIsStandalone(window.matchMedia("(display-mode: standalone)").matches);
@@ -387,7 +403,13 @@ export default function App() {
       />
       <Route
         path="/search"
-        element={<Search connected={connected} onSearch={handleSearch} />}
+        element={
+          <Search
+            connected={connected}
+            onSearch={handleSearch}
+            onAddToQueue={handleAddToQueue}
+          />
+        }
       />
       <Route
         path="/settings"
