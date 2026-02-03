@@ -1,21 +1,25 @@
 import { useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Layout } from "./Layout";
-import { IconNext, IconPause, IconPlay, IconPrevious } from "./Icons";
+import { IconNext, IconPause, IconPlay, IconPrevious, IconRepeat, IconRepeatOne, IconShuffle } from "./Icons";
 import { clamp, formatTime } from "../lib/format";
-import type { PlaybackState, QueueTrack } from "../lib/types";
+import type { PlaybackState, QueueTrack, RepeatMode } from "../lib/types";
 
 type ControlsProps = {
   playback: PlaybackState | null;
   track: QueueTrack | null;
   connected: boolean;
   statusLine: string;
+  shuffle: boolean;
+  repeat: RepeatMode;
   onPlay: () => Promise<void>;
   onPause: () => Promise<void>;
   onNext: () => Promise<void>;
   onPrevious: () => Promise<void>;
   onSeek: (position: number) => Promise<void>;
   onVolume: (volume: number) => Promise<void>;
+  onShuffle: () => Promise<void>;
+  onRepeat: () => Promise<void>;
 };
 
 export function Controls({
@@ -23,12 +27,16 @@ export function Controls({
   track,
   connected,
   statusLine,
+  shuffle,
+  repeat,
   onPlay,
   onPause,
   onNext,
   onPrevious,
   onSeek,
-  onVolume
+  onVolume,
+  onShuffle,
+  onRepeat
 }: ControlsProps) {
   const { t } = useTranslation();
   const [seekValue, setSeekValue] = useState<number | null>(null);
@@ -96,6 +104,14 @@ export function Controls({
 
         <div className="control-row">
           <button
+            className={`control-btn small ${shuffle ? 'active' : ''}`}
+            onClick={onShuffle}
+            disabled={!connected}
+            aria-label={t('controls.shuffle')}
+          >
+            <IconShuffle size={18} />
+          </button>
+          <button
             className="control-btn"
             onClick={onPrevious}
             disabled={!connected}
@@ -118,6 +134,14 @@ export function Controls({
             aria-label={t('controls.next')}
           >
             <IconNext />
+          </button>
+          <button
+            className={`control-btn small ${repeat !== 'Off' ? 'active' : ''}`}
+            onClick={onRepeat}
+            disabled={!connected}
+            aria-label={t('controls.repeat')}
+          >
+            {repeat === 'One' ? <IconRepeatOne size={18} /> : <IconRepeat size={18} />}
           </button>
         </div>
 

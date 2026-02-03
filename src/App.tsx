@@ -33,6 +33,8 @@ export default function App() {
   const [playback, setPlayback] = useState<PlaybackState | null>(null);
   const [track, setTrack] = useState<QueueTrack | null>(null);
   const [queueState, setQueueState] = useState<QueueStateResponse | null>(null);
+  const [shuffle, setShuffle] = useState(false);
+  const [repeat, setRepeat] = useState<'Off' | 'All' | 'One'>('Off');
   const [installEvent, setInstallEvent] = useState<BeforeInstallPromptEvent | null>(null);
   const [isStandalone, setIsStandalone] = useState(false);
 
@@ -123,6 +125,9 @@ export default function App() {
     try {
       const data = await apiJson<QueueStateResponse>(config, "/api/queue");
       setQueueState(data);
+      setShuffle(data.shuffle);
+      const mode = data.repeat;
+      setRepeat(mode === 'All' ? 'All' : mode === 'One' ? 'One' : 'Off');
     } catch (err) {
       console.error("Failed to fetch queue:", err);
     }
@@ -303,6 +308,38 @@ export default function App() {
     [connected, config, refreshQueue]
   );
 
+  const handleShuffle = useCallback(async () => {
+    if (!connected) return;
+    try {
+      const newShuffle = !shuffle;
+      const res = await apiJson<{ shuffle: boolean; repeat: string }>(
+        config,
+        "/api/queue/shuffle",
+        { method: "POST", body: JSON.stringify({ enabled: newShuffle }) }
+      );
+      setShuffle(res.shuffle);
+    } catch (err) {
+      setStatusText(`Shuffle error: ${(err as Error).message}`);
+    }
+  }, [connected, config, shuffle]);
+
+  const handleRepeat = useCallback(async () => {
+    if (!connected) return;
+    try {
+      // Cycle: Off -> All -> One -> Off
+      const nextMode = repeat === 'Off' ? 'all' : repeat === 'All' ? 'one' : 'off';
+      const res = await apiJson<{ shuffle: boolean; repeat: string }>(
+        config,
+        "/api/queue/repeat",
+        { method: "POST", body: JSON.stringify({ mode: nextMode }) }
+      );
+      const mode = res.repeat.toLowerCase();
+      setRepeat(mode === 'all' ? 'All' : mode === 'one' ? 'One' : 'Off');
+    } catch (err) {
+      setStatusText(`Repeat error: ${(err as Error).message}`);
+    }
+  }, [connected, config, repeat]);
+
   useEffect(() => {
     const updateStandalone = () => {
       setIsStandalone(window.matchMedia("(display-mode: standalone)").matches);
@@ -382,12 +419,16 @@ export default function App() {
             track={track}
             connected={connected}
             statusLine={statusFooter}
+            shuffle={shuffle}
+            repeat={repeat}
             onPlay={handlePlay}
             onPause={handlePause}
             onNext={handleNext}
             onPrevious={handlePrevious}
             onSeek={handleSeek}
             onVolume={handleVolume}
+            onShuffle={handleShuffle}
+            onRepeat={handleRepeat}
           />
         }
       />

@@ -591,6 +591,27 @@ button:disabled {
   border-color: var(--accent-hover);
 }
 
+.control-btn.small {
+  width: 40px;
+  height: 40px;
+  background: transparent;
+  border-color: transparent;
+  color: var(--text-muted);
+}
+
+.control-btn.small:hover {
+  background: var(--bg-tertiary);
+  color: var(--text-primary);
+}
+
+.control-btn.small.active {
+  color: var(--accent-primary);
+}
+
+.control-btn.small.active:hover {
+  color: var(--accent-hover);
+}
+
 .control-btn .icon {
   width: 24px;
   height: 24px;
