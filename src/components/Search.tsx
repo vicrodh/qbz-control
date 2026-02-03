@@ -1,7 +1,8 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { Layout } from "./Layout";
-import { IconPlus } from "./Icons";
+import { IconPlus, IconPlay } from "./Icons";
 import type {
   QueueTrack,
   SearchAllResponse,
@@ -20,6 +21,7 @@ type SearchProps = {
 };
 
 export function Search({ connected, onSearchAll, onAddToQueue, onPlayAlbum }: SearchProps) {
+  const navigate = useNavigate();
   const { t } = useTranslation();
   const [query, setQuery] = useState("");
   const [activeTab, setActiveTab] = useState<SearchTab>("tracks");
@@ -77,10 +79,20 @@ export function Search({ connected, onSearchAll, onAddToQueue, onPlayAlbum }: Se
     }
   };
 
-  const handlePlayAlbum = async (album: SearchAlbum) => {
+  const handleAlbumClick = (album: SearchAlbum) => {
+    navigate(`/album/${album.id}`);
+  };
+
+  const handlePlayAlbumClick = async (e: React.MouseEvent, album: SearchAlbum) => {
+    e.stopPropagation();
     if (onPlayAlbum) {
       await onPlayAlbum(album.id);
+      navigate("/controls");
     }
+  };
+
+  const handleArtistClick = (artist: SearchArtist) => {
+    navigate(`/artist/${artist.id}`);
   };
 
   const getResultCount = (tab: SearchTab): number => {
@@ -184,7 +196,7 @@ export function Search({ connected, onSearchAll, onAddToQueue, onPlayAlbum }: Se
               <div
                 className="list-item clickable"
                 key={album.id}
-                onClick={() => handlePlayAlbum(album)}
+                onClick={() => handleAlbumClick(album)}
               >
                 <div className="list-thumb">
                   {getAlbumImage(album) ? (
@@ -202,6 +214,15 @@ export function Search({ connected, onSearchAll, onAddToQueue, onPlayAlbum }: Se
                     {album.artist?.name || "Unknown artist"}
                   </div>
                 </div>
+                {onPlayAlbum && (
+                  <button
+                    className="add-btn"
+                    onClick={(e) => handlePlayAlbumClick(e, album)}
+                    aria-label={t("album.play")}
+                  >
+                    <IconPlay size={18} />
+                  </button>
+                )}
               </div>
             ))}
           </div>
@@ -210,7 +231,11 @@ export function Search({ connected, onSearchAll, onAddToQueue, onPlayAlbum }: Se
         {activeTab === "artists" && (
           <div className="list">
             {artists.map((artist) => (
-              <div className="list-item" key={artist.id}>
+              <div
+                className="list-item clickable"
+                key={artist.id}
+                onClick={() => handleArtistClick(artist)}
+              >
                 <div className="list-thumb artist-thumb">
                   {artist.picture ? (
                     <img src={artist.picture} alt={artist.name} />
