@@ -9,6 +9,7 @@
     "controls": "Controls",
     "queue": "Queue",
     "search": "Search",
+    "favorites": "Favorites",
     "settings": "Settings"
   },
   "install": {
@@ -99,6 +100,19 @@
     "notFound": "Artist not found",
     "albums": "Albums",
     "albumCount": "{{count}} albums"
+  },
+  "favorites": {
+    "title": "Favorites",
+    "loading": "Loading favorites...",
+    "hint": "View your favorite music",
+    "albums": "Albums",
+    "tracks": "Tracks",
+    "artists": "Artists",
+    "noAlbums": "No favorite albums yet",
+    "noTracks": "No favorite tracks yet",
+    "noArtists": "No favorite artists yet",
+    "remove": "Remove from favorites",
+    "add": "Add to favorites"
   },
   "settings": {
     "title": "Settings",

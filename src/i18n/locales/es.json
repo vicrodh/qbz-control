@@ -9,6 +9,7 @@
     "controls": "Controles",
     "queue": "Cola",
     "search": "Buscar",
+    "favorites": "Favoritos",
     "settings": "Ajustes"
   },
   "install": {
@@ -99,6 +100,19 @@
     "notFound": "Artista no encontrado",
     "albums": "Álbumes",
     "albumCount": "{{count}} álbumes"
+  },
+  "favorites": {
+    "title": "Favoritos",
+    "loading": "Cargando favoritos...",
+    "hint": "Ver tu música favorita",
+    "albums": "Álbumes",
+    "tracks": "Canciones",
+    "artists": "Artistas",
+    "noAlbums": "No tienes álbumes favoritos",
+    "noTracks": "No tienes canciones favoritas",
+    "noArtists": "No tienes artistas favoritos",
+    "remove": "Quitar de favoritos",
+    "add": "Agregar a favoritos"
   },
   "settings": {
     "title": "Ajustes",

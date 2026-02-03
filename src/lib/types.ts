@@ -100,3 +100,38 @@ export type SearchAllResponse = {
   playlists: SearchResultsPage<unknown>;
   most_popular?: unknown;
 };
+
+export type FavoriteTrack = {
+  id: number;
+  title: string;
+  performer: { id: number; name: string };
+  album: { id: string; title: string; image?: ImageSet };
+  duration: number;
+  hires?: boolean;
+  streamable: boolean;
+};
+
+export type FavoriteAlbum = {
+  id: string;
+  title: string;
+  artist: { id: number; name: string };
+  image?: ImageSet;
+  tracks_count?: number;
+  hires?: boolean;
+};
+
+export type FavoriteArtist = {
+  id: number;
+  name: string;
+  picture?: string;
+  albums_count?: number;
+};
+
+export type FavoritesResponse = {
+  items: FavoriteTrack[] | FavoriteAlbum[] | FavoriteArtist[];
+  total?: number;
+  limit?: number;
+  offset?: number;
+};
+
+export type FavoriteType = 'albums' | 'tracks' | 'artists';

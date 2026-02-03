@@ -1,7 +1,7 @@
 import type { ReactNode } from "react";
 import { Link, NavLink } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { IconControls, IconQueue, IconSearch, IconSettings } from "./Icons";
+import { IconControls, IconQueue, IconSearch, IconSettings, IconHeart } from "./Icons";
 
 type LayoutProps = {
   children: ReactNode;
@@ -49,6 +49,13 @@ export function Layout({ children, isConnected }: LayoutProps) {
         >
           <IconSearch className="tab-icon" />
           <span>{t('tabs.search')}</span>
+        </NavLink>
+        <NavLink
+          to="/favorites"
+          className={({ isActive }) => `tab-button ${isActive ? "active" : ""}`}
+        >
+          <IconHeart className="tab-icon" />
+          <span>{t('tabs.favorites')}</span>
         </NavLink>
         <NavLink
           to="/settings"

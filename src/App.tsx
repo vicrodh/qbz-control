@@ -5,6 +5,7 @@ import { Pairing } from "./components/Pairing";
 import { Controls } from "./components/Controls";
 import { Queue } from "./components/Queue";
 import { Search } from "./components/Search";
+import { Favorites } from "./components/Favorites";
 import { Settings } from "./components/Settings";
 import { Album } from "./components/Album";
 import { Artist } from "./components/Artist";
@@ -17,7 +18,8 @@ import type {
   PlaybackState,
   QueueStateResponse,
   QueueTrack,
-  SearchAllResponse
+  SearchAllResponse,
+  FavoriteType
 } from "./lib/types";
 
 type BeforeInstallPromptEvent = Event & {
@@ -343,6 +345,35 @@ export default function App() {
     [connected, config]
   );
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const handleGetFavorites = useCallback(
+    async (type: FavoriteType): Promise<any | null> => {
+      if (!connected) return null;
+      try {
+        return await apiJson(config, `/api/favorites?fav_type=${encodeURIComponent(type)}&limit=50`);
+      } catch (err) {
+        setStatusText(`Failed to load favorites: ${(err as Error).message}`);
+        return null;
+      }
+    },
+    [connected, config]
+  );
+
+  const handleRemoveFavorite = useCallback(
+    async (type: FavoriteType, itemId: string) => {
+      if (!connected) return;
+      try {
+        await apiFetch(config, "/api/favorites/remove", {
+          method: "POST",
+          body: JSON.stringify({ favType: type, itemId })
+        });
+      } catch (err) {
+        setStatusText(`Failed to remove favorite: ${(err as Error).message}`);
+      }
+    },
+    [connected, config]
+  );
+
   const handlePlayQueueIndex = useCallback(
     async (index: number) => {
       if (!connected) return;
@@ -537,6 +568,18 @@ export default function App() {
             statusText={statusLine}
             onCopyToken={handleCopyToken}
             onClear={handleClearConfig}
+          />
+        }
+      />
+      <Route
+        path="/favorites"
+        element={
+          <Favorites
+            connected={connected}
+            onGetFavorites={handleGetFavorites}
+            onAddToQueue={handleAddToQueue}
+            onPlayAlbum={handlePlayAlbum}
+            onRemoveFavorite={handleRemoveFavorite}
           />
         }
       />
