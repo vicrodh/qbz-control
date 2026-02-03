@@ -44,16 +44,18 @@ export function Favorites({
     setLoading(true);
     try {
       const data = await onGetFavorites(type);
-      if (data?.items) {
+      // API returns { albums: { items: [...] } } or { tracks: { items: [...] } } etc.
+      const items = data?.[type]?.items;
+      if (items) {
         switch (type) {
           case "tracks":
-            setTracks(data.items);
+            setTracks(items);
             break;
           case "albums":
-            setAlbums(data.items);
+            setAlbums(items);
             break;
           case "artists":
-            setArtists(data.items);
+            setArtists(items);
             break;
         }
       }
