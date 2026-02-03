@@ -8,6 +8,7 @@ dist
 *.log
 coverage
 .cache
+*.tsbuildinfo
 pnpm-lock.yaml
 yarn.lock
 npm-debug.log*

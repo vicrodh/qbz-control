@@ -57,12 +57,18 @@ This document explains how the PWA is wired to the QBZ remote control API and wh
 Example:
 ```json
 {
-  "url": "http://192.168.0.210:8182",
+  "url": "https://192.168.0.210:8182",
   "token": "...",
   "name": "QBZ",
   "version": "1.1.8"
 }
 ```
+
+## HTTPS requirement
+- The PWA is served over HTTPS, so browsers block `http://` and `ws://` as mixed content.
+- QBZ must serve HTTPS/WSS locally (secure mode) for the PWA to connect.
+- QBZ exposes a self-signed certificate at `GET /api/cert`.
+- On the controlling device, install the certificate and mark it as trusted.
 
 ## How to add new controls
 1. Add a new endpoint in QBZ (see `qbz-nix` wiring doc).
@@ -74,4 +80,4 @@ Example:
 - The PWA is built for GitHub Pages and uses hash routing.
 - `public/CNAME` is set to `control.qbz.lol`.
 - HTTPS hosting is required for installability.
-- Runtime requests still go to local QBZ over LAN.
+- Runtime requests go to local QBZ over LAN via HTTPS/WSS.
