@@ -202,6 +202,8 @@ export default function App() {
           duration: number;
           track_id: number;
           volume: number;
+          shuffle?: boolean;
+          repeat?: string;
         };
 
         // Update playback state directly from WebSocket data
@@ -212,6 +214,15 @@ export default function App() {
           track_id: data.track_id,
           volume: data.volume
         });
+
+        // Update shuffle/repeat if present in message
+        if (data.shuffle !== undefined) {
+          setShuffle(data.shuffle);
+        }
+        if (data.repeat !== undefined) {
+          const mode = data.repeat.toLowerCase();
+          setRepeat(mode === 'all' ? 'All' : mode === 'one' ? 'One' : 'Off');
+        }
 
         // If track changed, refresh to get full track info and queue
         if (lastTrackId !== null && lastTrackId !== data.track_id) {
