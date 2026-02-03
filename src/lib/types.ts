@@ -1,0 +1,59 @@
+export type ApiConfig = {
+  baseUrl: string;
+  token: string;
+};
+
+export type PingResponse = {
+  ok: boolean;
+  name: string;
+  version: string;
+};
+
+export type PlaybackState = {
+  is_playing: boolean;
+  position: number;
+  duration: number;
+  track_id: number;
+  volume: number;
+};
+
+export type QueueTrack = {
+  id: number;
+  title: string;
+  artist: string;
+  album: string;
+  duration_secs: number;
+  artwork_url?: string | null;
+  is_local?: boolean;
+  streamable?: boolean;
+};
+
+export type NowPlayingResponse = {
+  playback: PlaybackState;
+  track: QueueTrack | null;
+};
+
+export type SearchResultsPage<T> = {
+  items: T[];
+  total: number;
+  offset: number;
+  limit: number;
+};
+
+export type SearchTrack = {
+  id: number;
+  title: string;
+  performer?: { name: string };
+  artist?: string | { name: string };
+  album?: { title: string; image?: ImageSet } | string;
+  duration: number;
+};
+
+export type ImageSet = {
+  small?: string | null;
+  thumbnail?: string | null;
+  large?: string | null;
+  extralarge?: string | null;
+  mega?: string | null;
+  back?: string | null;
+};
